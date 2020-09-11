@@ -1,0 +1,23 @@
+<span id="a">ManhNho@Whitehat</span>:<span id="b">~</span><span id="c">$</span> cat /etc/passwd<br/><br/><!-- laglaglaglaglaglaglaglaglaglaglaglag -->
+Hi, my name is Manh Pham (A.K.A. ManhNho).<!-- laglaglaglaglaglaglaglaglaglaglaglag -->
+<p>I'm a young security researcher from Vietnam, passionate in penetration testing and application security. I've been studying at Academy of Cryptography Technique for 5 years. Currently, I work at <a href="https://www.nashtechglobal.com/" target="_blank" rel="noopener noreferrer">NashTech</a> as a Penetration Tester.<!-- laglaglaglaglaglaglaglaglaglaglaglag -->
+The following list contains some of the most recognizable companies in the world I have collaborated with, and they included me in their security acknowledgements page for reporting valid security issues:
+<ul>
+<li><a href="https://www.facebook.com/whitehat/thanks/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+<li><a href="https://bughunter.withgoogle.com/rank/hof" target="_blank" rel="noopener noreferrer">Google</a></li>
+<li><a href="https://portal.msrc.microsoft.com/en-us/security-guidance/researcher-acknowledgments-online-services" target="_blank" rel="noopener noreferrer">Microsoft</a></li>
+<li><a href="https://www.eccouncil.org/bug-bounty/hall-of-fame/" target="_blank" rel="noopener noreferrer">EC-Council</a></li>
+<li><a href="" target="_blank" rel="noopener noreferrer">...</a></li>
+</ul><!-- laglaglaglaglaglaglaglaglaglaglaglag -->
+At this time, I also contribute to <a href="https://www.owasp.org/" target="_blank" rel="noopener noreferrer">OWASP</a>. Write new testing cases & review testing cases for:
+<ul>
+<li><a href="https://github.com/OWASP/wstg" target="_blank" rel="noopener noreferrer">OWASP Web Security Testing Guide v5</a></li>
+<li><a href="https://github.com/OWASP/owasp-cstg" target="_blank" rel="noopener noreferrer">OWASP Cloud Security Testing Guide</a></li>
+</ul><!-- laglaglaglaglaglaglaglaglaglaglaglag -->
+You can visit my personal blog <a href="" target="_blank" rel="noopener noreferrer">404</a>. Also, feel free to contact me on...<br/>
+Facebook: <a href="https://facebook.com/manhnho.owasp" target="_blank" rel="noopener noreferrer">Manh Pham Tien</a><br/>
+Email: &nbsp;&nbsp;<a href="mailto:pham.manh@owasp.org">pham.manh@owasp.org</a>
+</p>
+<!-- slightdelayhere-->
+Best Regards
+<br/>
