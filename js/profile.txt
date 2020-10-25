@@ -1,4 +1,4 @@
-<span id="a">ManhNho@Whitehat</span>:<span id="b">~</span><span id="c">$</span> cat /etc/passwd<br/><br/><!-- laglaglaglaglaglaglaglaglaglaglaglag -->
+<span id="a">ManhNho@Whitehat</span>:<span id="b">~</span><span id="c">$</span> whoami<br/><br/><!-- laglaglaglaglaglaglaglaglaglaglaglag -->
 Hi, my name is Manh Pham (A.K.A. ManhNho).<!-- laglaglaglaglaglaglaglaglaglaglaglag -->
 <p>I'm a young security researcher from Vietnam, passionate in penetration testing and application security. I've been studying at Academy of Cryptography Technique for 5 years. Currently, I work at <a href="https://www.nashtechglobal.com/" target="_blank" rel="noopener noreferrer">NashTech</a> as a Penetration Tester.</p><!-- laglaglaglaglaglaglaglaglaglaglaglag -->
 <p>The following list contains some of the most recognizable companies in the world I have collaborated with, and they included me in their security acknowledgements page for reporting valid security issues:
