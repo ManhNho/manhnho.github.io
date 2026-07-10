@@ -1,0 +1,26 @@
+---
+permalink: /vi/feed.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ManhNho — Phạm Tiến Mạnh · Blog</title>
+  <subtitle>Writing cyber security &amp; Startup.</subtitle>
+  <link href="{{ site.url }}/vi/feed.xml" rel="self"/>
+  <link href="{{ site.url }}/vi/blog/"/>
+  <id>{{ site.url }}/vi/</id>
+  {%- set posts = collections.posts_vi %}
+  {%- if posts | length %}<updated>{{ posts[0].date | isoDate }}T00:00:00Z</updated>{%- endif %}
+  <author><name>{{ site.person.name }}</name><uri>{{ site.url }}/vi/</uri></author>
+  {%- for post in posts %}
+  <entry>
+    <title>{{ post.data.title }}</title>
+    <link href="{{ site.url }}{{ post.url }}"/>
+    <id>{{ site.url }}{{ post.url }}</id>
+    <updated>{{ post.date | isoDate }}T00:00:00Z</updated>
+    <published>{{ post.date | isoDate }}T00:00:00Z</published>
+    {%- for tag in post.data.tags_list %}<category term="{{ tag }}"/>{%- endfor %}
+    <summary>{{ post.data.description }}</summary>
+  </entry>
+  {%- endfor %}
+</feed>

@@ -1,0 +1,15 @@
+{
+  "name": "manhnho.github.io",
+  "version": "1.0.0",
+  "description": "Personal cybersecurity blog of Pham Tien Manh (ManhNho)",
+  "private": true,
+  "scripts": {
+    "dev": "eleventy --serve --port=8080",
+    "build": "eleventy",
+    "new": "node scripts/new-post.js",
+    "translate": "node scripts/translate.js"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1"
+  }
+}

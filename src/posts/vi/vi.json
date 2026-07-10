@@ -1,0 +1,6 @@
+{
+  "layout": "layouts/post.njk",
+  "lang": "vi",
+  "ogType": "article",
+  "permalink": "/vi/blog/{{ page.fileSlug }}/"
+}

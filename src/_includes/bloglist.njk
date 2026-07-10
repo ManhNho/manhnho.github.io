@@ -1,0 +1,51 @@
+{% set posts = collections.posts_vi if lang == "vi" else collections.posts_en %}
+{% set blogBase = "/blog/" if lang == "en" else "/vi/blog/" %}
+
+<div class="page-head">
+  <h1>{{ t[lang].blog_title }}</h1>
+  <p>{{ t[lang].blog_desc }}</p>
+</div>
+
+{% if posts | length %}
+<div class="blog-search">
+  <svg class="bs-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+  <input id="blog-q" type="search" autocomplete="off" spellcheck="false"
+         placeholder="{{ t[lang].search_placeholder }}" aria-label="{{ t[lang].search_placeholder }}">
+  <kbd class="bs-kbd">/</kbd>
+</div>
+
+<div id="active-filter" class="active-filter" hidden>
+  <span class="af-label mono">{{ t[lang].filtering_tag }}:</span>
+  <span class="af-tag mono" id="af-tag"></span>
+  <button id="af-clear" class="af-clear mono" type="button">{{ t[lang].clear }} ✕</button>
+</div>
+
+<div id="results-meta" class="results-meta mono"></div>
+
+<div id="post-results" class="post-list"
+     data-pagesize="5"
+     data-count-suffix="{{ t[lang].results_count }}">
+  {% for post in posts %}
+  <article class="post-card"
+           data-title="{{ post.data.title }}"
+           data-tags="{% for tag in post.data.tags_list %}{{ tag }} {% endfor %}"
+           data-date="{{ post.date | isoDate }}">
+    <a class="post-card-main" href="{{ post.url }}">
+      <h3>{{ post.data.title }}</h3>
+      <div class="meta">{{ post.date | readableDate(lang) }} · {{ post.templateContent | readingTime }} {{ t[lang].min_read }}</div>
+      <p>{{ post.data.description }}</p>
+    </a>
+    {% if post.data.tags_list %}
+    <div class="card-tags">
+      {% for tag in post.data.tags_list %}<button class="tag" type="button" data-tag="{{ tag }}">#{{ tag }}</button>{% endfor %}
+    </div>
+    {% endif %}
+  </article>
+  {% endfor %}
+</div>
+
+<p id="no-results" class="no-results" hidden>{{ t[lang].no_results }}</p>
+<nav id="pager" class="pager" aria-label="Pagination"></nav>
+{% else %}
+<p class="no-results">{{ t[lang].blog_empty }}</p>
+{% endif %}

@@ -1,0 +1,22 @@
+---
+layout: layouts/base.njk
+---
+{% set blogUrl = "/blog/" if lang == "en" else "/vi/blog/" %}
+<article class="post reveal">
+  <header class="post-header">
+    <a class="back-link mono" href="{{ blogUrl }}">{{ t[lang].back_to_blog }}</a>
+    <h1 class="post-title">{{ title }}</h1>
+    <div class="post-meta mono">
+      <time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate(lang) }}</time>
+      <span class="dot">·</span>
+      <span>{{ content | readingTime }} {{ t[lang].min_read }}</span>
+      {% if tags_list %}
+        <span class="dot">·</span>
+        {% for tag in tags_list %}<a class="tag" href="{{ blogUrl }}?tag={{ tag | urlencode }}">#{{ tag }}</a>{% endfor %}
+      {% endif %}
+    </div>
+  </header>
+  <div class="post-body">
+    {{ content | safe }}
+  </div>
+</article>

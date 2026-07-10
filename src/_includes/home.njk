@@ -1,0 +1,124 @@
+{% set blogUrl = "/blog/" if lang == "en" else "/vi/blog/" %}
+{% set posts = collections.posts_en if lang == "en" else collections.posts_vi %}
+
+<section class="hero">
+  <div class="hero-text">
+    <h1 class="hero-name">Manh Pham</h1>
+    <p class="hero-role">{{ t[lang].hero_role }}</p>
+    <p class="hero-intro">{{ t[lang].hero_intro }}</p>
+
+    <div class="hero-meta">
+      {% for s in site.stats %}
+      <div class="item"><div class="num">{{ s.value }}</div><div class="cap">{{ s.label[lang] }}</div></div>
+      {% endfor %}
+    </div>
+
+    <blockquote class="hero-quote">"{{ site.motto[lang] }}"</blockquote>
+
+    <div class="hero-flag">
+      <img src="/assets/img/acropolis/vn.svg" alt="Vietnam">
+      <span>Hanoi, Vietnam</span>
+    </div>
+  </div>
+
+  <div class="hero-portrait">
+    <div class="glitch">
+      <img src="/assets/img/acropolis/portrait.jpg" alt="Pham Tien Manh — ManhNho">
+      <div class="glitch__layers" aria-hidden="true">
+        <div class="glitch__layer" style="background-image:url('/assets/img/acropolis/portrait.jpg')"></div>
+        <div class="glitch__layer" style="background-image:url('/assets/img/acropolis/portrait.jpg')"></div>
+        <div class="glitch__layer"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% set extIcon %}<svg class="ext-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>{% endset %}
+
+<section class="section reveal">
+  <h2 class="section-title">{{ t[lang].recognition }}</h2>
+
+  <div class="pinned-grid">
+    {% for p in site.pinned %}
+    <a class="pinned-card" href="{{ p.link }}" target="_blank" rel="noopener">
+      <span class="pin-flag">★ {{ t[lang].pinned_label }}</span>
+      <div class="pin-head">
+        <img src="/assets/img/{{ p.logo }}" alt="" class="pin-logo{% if p.tint %} tint{% endif %}">
+        <span class="pin-rank">{{ p.rank }}</span>
+      </div>
+      <p class="pin-text">{{ p[lang] | safe }}</p>
+      <span class="pin-foot">{{ p.year }} · {{ t[lang].verify }} {{ extIcon | safe }}</span>
+    </a>
+    {% endfor %}
+  </div>
+
+  <div class="acropolis-rail">
+    <span class="rail-label">Synack Acropolis</span>
+    <div class="awards-by-year">
+      {% for r in site.recognitions %}
+      <a class="year-group" href="{{ r.link }}" target="_blank" rel="noopener" title="{{ t[lang].view_acropolis }}">
+        <div class="yr">{{ r.year }}</div>
+        <div class="year-node"></div>
+        <div class="year-badges">
+          {% for b in r.badges %}
+          <div class="badge">
+            <img src="/assets/img/acropolis/{{ b.img }}" alt="{{ b.name }}">
+            <span class="bname">{{ b.name }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <h3 class="sub-label">{{ t[lang].hall_of_fame_label }}</h3>
+  <div class="logo-wall">
+    {% for h in site.halls %}
+    <a class="logo-cell" href="{{ h.link or '#' }}" target="_blank" rel="noopener">
+      <div class="logo-top">
+        <img class="brand-logo" src="/assets/img/logos/{{ h.logo }}" alt="{{ h.org }}">
+      </div>
+      <div class="logo-note">{{ h.note[lang] }}</div>
+      <div class="logo-foot">
+        <span class="logo-year">{{ h.years }}</span>
+        <span class="verify-tag">{{ t[lang].verify }} {{ extIcon | safe }}</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section reveal">
+  <h2 class="section-title">{{ t[lang].certs }} <span class="hint mono">{{ t[lang].hover_hint }}</span></h2>
+  <div class="cert-grid">
+    {% for c in site.certs %}
+    <a class="cert-card" href="{{ c.link or '#' }}" target="_blank" rel="noopener">
+      <img class="cert-logo {{ c.type }}" src="/assets/img/logos/{{ c.logo }}" alt="{{ c.vendor }}">
+      <div class="cert-info">
+        <div class="cert-name">{{ c.name }}</div>
+        <div class="cert-vendor">{{ c.vendor }} · {{ c.year }}</div>
+      </div>
+      <span class="cert-verify">{{ t[lang].verify }} {{ extIcon | safe }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if posts | length %}
+<section class="section reveal">
+  <h2 class="section-title">{{ t[lang].latest_posts }}</h2>
+  <div class="post-list">
+    {% for post in posts %}
+      {% if loop.index <= 3 %}
+      <a class="post-card" href="{{ post.url }}">
+        <h3>{{ post.data.title }}</h3>
+        <div class="meta">{{ post.date | readableDate(lang) }}{% if post.data.tags_list %} · {% for tag in post.data.tags_list %}<span class="tag">#{{ tag }}</span>{% endfor %}{% endif %}</div>
+        <p>{{ post.data.description }}</p>
+      </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <p style="margin-top:1.2rem"><a class="mono" href="{{ blogUrl }}">{{ t[lang].all_posts }}</a></p>
+</section>
+{% endif %}

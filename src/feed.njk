@@ -1,0 +1,26 @@
+---
+permalink: /feed.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ManhNho — Pham Tien Manh · Blog</title>
+  <subtitle>Writing cyber security &amp; Startup.</subtitle>
+  <link href="{{ site.url }}/feed.xml" rel="self"/>
+  <link href="{{ site.url }}/blog/"/>
+  <id>{{ site.url }}/</id>
+  {%- set posts = collections.posts_en %}
+  {%- if posts | length %}<updated>{{ posts[0].date | isoDate }}T00:00:00Z</updated>{%- endif %}
+  <author><name>{{ site.person.name }}</name><uri>{{ site.url }}/</uri></author>
+  {%- for post in posts %}
+  <entry>
+    <title>{{ post.data.title }}</title>
+    <link href="{{ site.url }}{{ post.url }}"/>
+    <id>{{ site.url }}{{ post.url }}</id>
+    <updated>{{ post.date | isoDate }}T00:00:00Z</updated>
+    <published>{{ post.date | isoDate }}T00:00:00Z</published>
+    {%- for tag in post.data.tags_list %}<category term="{{ tag }}"/>{%- endfor %}
+    <summary>{{ post.data.description }}</summary>
+  </entry>
+  {%- endfor %}
+</feed>
