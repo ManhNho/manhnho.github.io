@@ -64,8 +64,8 @@ module.exports = {
     },
     {
       logo: "acropolis/legend-2stars.png", tint: false, rank: "2★", year: "2024",
-      vi: '<span class="pin-lead">Synack Red Team Legend</span>báo cáo lỗ hổng hợp lệ cho <span class="num">100<span class="plus">+</span></span> công ty<br>&amp; <span class="num">200<span class="plus">+</span></span> mục tiêu',
-      en: '<span class="pin-lead">Synack Red Team Legend</span>valid reports across <span class="num">100<span class="plus">+</span></span> companies<br>&amp; <span class="num">200<span class="plus">+</span></span> targets',
+      vi: '<span class="pin-lead">Synack Red Team Legend</span>Báo cáo lỗ hổng hợp lệ cho <span class="num">100<span class="plus">+</span></span> công ty<br>&amp; <span class="num">200<span class="plus">+</span></span> mục tiêu',
+      en: '<span class="pin-lead">Synack Red Team Legend</span>Valid reports across <span class="num">100<span class="plus">+</span></span> companies<br>&amp; <span class="num">200<span class="plus">+</span></span> targets',
       link: "https://acropolis.synack.com/inductees/manhnho",
     },
   ],
