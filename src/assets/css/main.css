@@ -137,9 +137,14 @@ a:hover { color: var(--red); }
 .glitch img,
 .glitch .glitch__layer {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; background-size: cover; background-position: center;
+  object-fit: cover; object-position: 64% 26%;
+  background-size: cover; background-position: 64% 26%;
 }
 .glitch img { z-index: 1; }
+/* desaturate the portrait so any (colour) source matches the mono + red-tint look */
+.glitch img,
+.glitch__layer:nth-child(1),
+.glitch__layer:nth-child(2) { filter: grayscale(1) contrast(1.03) brightness(.97); }
 .glitch__layers { position: absolute; inset: 0; z-index: 2; opacity: 0; transition: opacity .12s; }
 .glitch__layer { will-change: clip-path, transform; }
 .glitch__layer:nth-child(3) { background: var(--red-bright); mix-blend-mode: screen; }
