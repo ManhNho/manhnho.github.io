@@ -166,13 +166,62 @@ document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
   render();
 })();
 
-// Glitch the portrait while hovered / pressed (mirrors Synack Acropolis' JS toggle)
-const glitch = document.querySelector(".glitch");
-if (glitch) {
+// Glitch any .glitch block while hovered / pressed (mirrors Synack Acropolis' JS toggle)
+document.querySelectorAll(".glitch").forEach((glitch) => {
   const on = () => glitch.classList.add("is-glitching");
   const off = () => glitch.classList.remove("is-glitching");
   glitch.addEventListener("mouseenter", on);
   glitch.addEventListener("mouseleave", off);
   glitch.addEventListener("touchstart", on, { passive: true });
   glitch.addEventListener("touchend", off);
-}
+});
+
+// ---- Lightbox: click a cert/recognition card to view its image (with glitch) ----
+(() => {
+  const box = document.getElementById("lightbox");
+  if (!box) return;
+  const lbImg = document.getElementById("lb-img");
+  const lbGlitch = box.querySelector(".lb-glitch");
+  const layers = lbGlitch.querySelectorAll(".glitch__layer");
+  const closeBtn = box.querySelector(".lightbox-close");
+  let burst;
+
+  function open(src) {
+    if (!src) return;
+    lbImg.src = src;
+    // first two layers mirror the image for the RGB-split glitch; third is the red flash
+    if (layers[0]) layers[0].style.backgroundImage = `url('${src}')`;
+    if (layers[1]) layers[1].style.backgroundImage = `url('${src}')`;
+    box.hidden = false;
+    document.body.style.overflow = "hidden";
+    // cool entrance glitch, then settle so the image is readable
+    lbGlitch.classList.add("is-glitching");
+    clearTimeout(burst);
+    burst = setTimeout(() => lbGlitch.classList.remove("is-glitching"), 650);
+  }
+  function close() {
+    box.hidden = true;
+    document.body.style.overflow = "";
+    lbImg.src = "";
+  }
+
+  // open on card click / keyboard, but let the "Verify" link navigate normally
+  document.querySelectorAll("[data-img]").forEach((card) => {
+    card.addEventListener("click", (e) => {
+      if (e.target.closest(".verify-link")) return;
+      e.preventDefault();
+      open(card.getAttribute("data-img"));
+    });
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        if (e.target.closest(".verify-link")) return;
+        e.preventDefault();
+        open(card.getAttribute("data-img"));
+      }
+    });
+  });
+
+  closeBtn.addEventListener("click", close);
+  box.addEventListener("click", (e) => { if (e.target === box) close(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !box.hidden) close(); });
+})();

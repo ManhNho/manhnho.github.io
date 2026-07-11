@@ -40,15 +40,15 @@
 
   <div class="pinned-grid">
     {% for p in site.pinned %}
-    <a class="pinned-card" href="{{ p.link }}" target="_blank" rel="noopener">
+    <div class="pinned-card" data-img="/assets/img/{{ p.img }}" role="button" tabindex="0" aria-label="{{ p.rank }}">
       <span class="pin-flag">★ {{ t[lang].pinned_label }}</span>
       <div class="pin-head">
         <img src="/assets/img/{{ p.logo }}" alt="" class="pin-logo{% if p.tint %} tint{% endif %}">
         <span class="pin-rank">{{ p.rank }}</span>
       </div>
       <p class="pin-text">{{ p[lang] | safe }}</p>
-      <span class="pin-foot">{{ p.year }} · {{ t[lang].verify }} {{ extIcon | safe }}</span>
-    </a>
+      <a class="pin-foot verify-link" href="{{ p.link }}" target="_blank" rel="noopener">{{ p.year }} · {{ t[lang].verify }} {{ extIcon | safe }}</a>
+    </div>
     {% endfor %}
   </div>
 
@@ -56,7 +56,7 @@
     <span class="rail-label">Synack Acropolis</span>
     <div class="awards-by-year">
       {% for r in site.recognitions %}
-      <a class="year-group" href="{{ r.link }}" target="_blank" rel="noopener" title="{{ t[lang].view_acropolis }}">
+      <div class="year-group" data-img="/assets/img/{{ r.img }}" role="button" tabindex="0" aria-label="Synack {{ r.year }}">
         <div class="yr">{{ r.year }}</div>
         <div class="year-node"></div>
         <div class="year-badges">
@@ -67,7 +67,8 @@
           </div>
           {% endfor %}
         </div>
-      </a>
+        <a class="year-verify verify-link" href="{{ r.link }}" target="_blank" rel="noopener">{{ t[lang].verify }} {{ extIcon | safe }}</a>
+      </div>
       {% endfor %}
     </div>
   </div>
@@ -75,35 +76,48 @@
   <h3 class="sub-label">{{ t[lang].hall_of_fame_label }}</h3>
   <div class="logo-wall">
     {% for h in site.halls %}
-    <a class="logo-cell" href="{{ h.link or '#' }}" target="_blank" rel="noopener">
+    <div class="logo-cell" data-img="/assets/img/{{ h.img }}" role="button" tabindex="0" aria-label="{{ h.org }}">
       <div class="logo-top">
         <img class="brand-logo" src="/assets/img/logos/{{ h.logo }}" alt="{{ h.org }}">
       </div>
       <div class="logo-note">{{ h.note[lang] }}</div>
       <div class="logo-foot">
         <span class="logo-year">{{ h.years }}</span>
-        <span class="verify-tag">{{ t[lang].verify }} {{ extIcon | safe }}</span>
+        <a class="verify-tag verify-link" href="{{ h.link }}" target="_blank" rel="noopener">{{ t[lang].verify }} {{ extIcon | safe }}</a>
       </div>
-    </a>
+    </div>
     {% endfor %}
   </div>
 </section>
 
 <section class="section reveal">
-  <h2 class="section-title">{{ t[lang].certs }} <span class="hint mono">{{ t[lang].hover_hint }}</span></h2>
+  <h2 class="section-title">{{ t[lang].certs }} <span class="hint mono">{{ t[lang].view_hint }}</span></h2>
   <div class="cert-grid">
     {% for c in site.certs %}
-    <a class="cert-card" href="{{ c.link or '#' }}" target="_blank" rel="noopener">
+    <div class="cert-card" data-img="/assets/img/{{ c.img }}" role="button" tabindex="0" aria-label="{{ c.name }}">
       <img class="cert-logo {{ c.type }}" src="/assets/img/logos/{{ c.logo }}" alt="{{ c.vendor }}">
       <div class="cert-info">
         <div class="cert-name">{{ c.name }}</div>
         <div class="cert-vendor">{{ c.vendor }} · {{ c.year }}</div>
       </div>
-      <span class="cert-verify">{{ t[lang].verify }} {{ extIcon | safe }}</span>
-    </a>
+      <a class="cert-verify verify-link" href="{{ c.link }}" target="_blank" rel="noopener">{{ t[lang].verify }} {{ extIcon | safe }}</a>
+    </div>
     {% endfor %}
   </div>
 </section>
+
+{# Lightbox for cert / recognition images (with the same glitch effect as the avatar) #}
+<div id="lightbox" class="lightbox" hidden aria-modal="true" role="dialog">
+  <button class="lightbox-close" aria-label="Close">✕</button>
+  <div class="glitch lb-glitch">
+    <img id="lb-img" src="" alt="">
+    <div class="glitch__layers" aria-hidden="true">
+      <div class="glitch__layer"></div>
+      <div class="glitch__layer"></div>
+      <div class="glitch__layer"></div>
+    </div>
+  </div>
+</div>
 
 {% if posts | length %}
 <section class="section reveal">
