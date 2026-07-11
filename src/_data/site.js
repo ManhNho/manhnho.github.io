@@ -85,9 +85,9 @@ module.exports = {
   // ordered most-recent first (left) → oldest (right)
   halls: [
     { logo: "microsoft.svg", org: "Microsoft", note: { vi: "Hall of Fame · Leaderboard MSRC Q1 2026", en: "Hall of Fame · MSRC Q1 2026 Leaderboard" }, years: "2019, 2026", link: "https://msrc.microsoft.com/leaderboard", img: "recognitions/microsoft-q1-2026.jpg" },
-    { logo: "apple.svg", org: "Apple", note: { vi: "Hall of Fame ×4", en: "Hall of Fame ×4" }, years: "2021", link: "https://security.apple.com/hall-of-fame/", img: "recognitions/apple.jpg" },
-    { logo: "cert-offsec.png", org: "OffSec", note: { vi: "Friends of Offensive Security ×2", en: "Friends of Offensive Security ×2" }, years: "2021", link: "https://www.offsec.com/offsec/friends-of-offsec/", img: "recognitions/offsec.jpg" },
-    { logo: "google.svg", org: "Google", note: { vi: "Hall of Fame & Honorable Mentions", en: "Hall of Fame & Honorable Mentions" }, years: "2020", link: "https://bughunters.google.com/leaderboard/honorable-mentions", img: "recognitions/google.jpg" },
+    { logo: "apple.svg", org: "Apple", note: { vi: "Hall of Fame ×4", en: "Hall of Fame ×4" }, years: "2021", link: "https://support.apple.com/en-us/102812", img: "recognitions/apple.jpg" },
+    { logo: "cert-offsec.png", org: "OffSec", note: { vi: "Friends of Offensive Security ×2", en: "Friends of Offensive Security ×2" }, years: "2021", link: "https://www.offsec.com/community/bug-bounty/", img: "recognitions/offsec.jpg" },
+    { logo: "google.svg", org: "Google", note: { vi: "Hall of Fame & Honorable Mentions", en: "Hall of Fame & Honorable Mentions" }, years: "2020", link: "https://bughunter.withgoogle.com/profile/79ea3f0e-1d69-4a97-80e3-5cb62636ee89", img: "recognitions/google.jpg" },
     { logo: "meta.svg", org: "Meta", note: { vi: "Top 100 white-hat hackers", en: "Top 100 white-hat hackers" }, years: "2019", link: "https://www.facebook.com/whitehat/thanks/", img: "recognitions/meta.jpg" },
   ],
 
