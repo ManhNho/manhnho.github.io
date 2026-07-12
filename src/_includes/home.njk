@@ -41,7 +41,7 @@
   <div class="pinned-grid">
     {% for p in site.pinned %}
     <div class="pinned-card" data-img="/assets/img/{{ p.img }}" role="button" tabindex="0" aria-label="{{ p.rank }}">
-      <span class="pin-flag">★ {{ t[lang].pinned_label }}</span>
+      <span class="pin-flag">{{ t[lang].pinned_label }}</span>
       <div class="pin-head">
         <img src="/assets/img/{{ p.logo }}" alt="" class="pin-logo{% if p.tint %} tint{% endif %}">
         <span class="pin-rank">{{ p.rank }}</span>
@@ -91,7 +91,7 @@
 </section>
 
 <section class="section reveal">
-  <h2 class="section-title">{{ t[lang].certs }} <span class="hint mono">{{ t[lang].view_hint }}</span></h2>
+  <h2 class="section-title">{{ t[lang].certs }}</h2>
   <div class="cert-grid">
     {% for c in site.certs %}
     <div class="cert-card" data-img="/assets/img/{{ c.img }}" role="button" tabindex="0" aria-label="{{ c.name }}">
