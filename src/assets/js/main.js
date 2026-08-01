@@ -247,25 +247,44 @@ document.querySelectorAll(".glitch").forEach((glitch) => {
   const lbGlitch = box.querySelector(".lb-glitch");
   const layers = lbGlitch.querySelectorAll(".glitch__layer");
   const closeBtn = box.querySelector(".lightbox-close");
+  const prevBtn = document.getElementById("lb-prev");
+  const nextBtn = document.getElementById("lb-next");
+  const counter = document.getElementById("lb-counter");
   let burst;
+  let imgs = [];
+  let idx = 0;
 
-  function open(src) {
-    if (!src) return;
+  function parseImgs(raw) {
+    if (!raw) return [];
+    if (raw[0] === "[") { try { const a = JSON.parse(raw); return Array.isArray(a) ? a : [raw]; } catch (e) { return [raw]; } }
+    return [raw];
+  }
+  function show(i) {
+    idx = (i + imgs.length) % imgs.length;
+    const src = imgs[idx];
     lbImg.src = src;
-    // first two layers mirror the image for the RGB-split glitch; third is the red flash
     if (layers[0]) layers[0].style.backgroundImage = `url('${src}')`;
     if (layers[1]) layers[1].style.backgroundImage = `url('${src}')`;
-    box.hidden = false;
-    document.body.style.overflow = "hidden";
-    // cool entrance glitch, then settle so the image is readable
+    const multi = imgs.length > 1;
+    prevBtn.hidden = nextBtn.hidden = counter.hidden = !multi;
+    if (multi) counter.textContent = (idx + 1) + " / " + imgs.length;
+    // cool glitch burst on each change
     lbGlitch.classList.add("is-glitching");
     clearTimeout(burst);
     burst = setTimeout(() => lbGlitch.classList.remove("is-glitching"), 650);
+  }
+  function open(raw) {
+    imgs = parseImgs(raw);
+    if (!imgs.length) return;
+    show(0);
+    box.hidden = false;
+    document.body.style.overflow = "hidden";
   }
   function close() {
     box.hidden = true;
     document.body.style.overflow = "";
     lbImg.src = "";
+    imgs = [];
   }
 
   // delegation so dynamically-added gallery tiles work too; the "Verify" link opts out
@@ -282,9 +301,14 @@ document.querySelectorAll(".glitch").forEach((glitch) => {
       const card = e.target.closest("[data-img]");
       if (card && !box.contains(card)) { e.preventDefault(); open(card.getAttribute("data-img")); }
     }
-    if (e.key === "Escape" && !box.hidden) close();
+    if (box.hidden) return;
+    if (e.key === "Escape") close();
+    if (imgs.length > 1 && e.key === "ArrowLeft") show(idx - 1);
+    if (imgs.length > 1 && e.key === "ArrowRight") show(idx + 1);
   });
 
+  prevBtn.addEventListener("click", (e) => { e.stopPropagation(); show(idx - 1); });
+  nextBtn.addEventListener("click", (e) => { e.stopPropagation(); show(idx + 1); });
   closeBtn.addEventListener("click", close);
   box.addEventListener("click", (e) => { if (e.target === box) close(); });
 })();

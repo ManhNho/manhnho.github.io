@@ -76,7 +76,7 @@
   <h3 class="sub-label">{{ t[lang].hall_of_fame_label }}</h3>
   <div class="logo-wall">
     {% for h in site.halls %}
-    <div class="logo-cell" data-img="/assets/img/{{ h.img }}" role="button" tabindex="0" aria-label="{{ h.org }}">
+    <div class="logo-cell" data-img='{% if h.imgs %}{{ h.imgs | dump | safe }}{% else %}/assets/img/{{ h.img }}{% endif %}' role="button" tabindex="0" aria-label="{{ h.org }}">
       <div class="logo-top">
         <img class="brand-logo" src="/assets/img/logos/{{ h.logo }}" alt="{{ h.org }}">
       </div>
@@ -125,6 +125,8 @@
 {# Lightbox for cert / recognition images (with the same glitch effect as the avatar) #}
 <div id="lightbox" class="lightbox" hidden aria-modal="true" role="dialog">
   <button class="lightbox-close" aria-label="Close">✕</button>
+  <button id="lb-prev" class="lb-nav lb-prev" aria-label="Previous" hidden>‹</button>
+  <button id="lb-next" class="lb-nav lb-next" aria-label="Next" hidden>›</button>
   <div class="glitch lb-glitch">
     <img id="lb-img" src="" alt="">
     <div class="glitch__layers" aria-hidden="true">
@@ -133,6 +135,7 @@
       <div class="glitch__layer"></div>
     </div>
   </div>
+  <div id="lb-counter" class="lb-counter mono" hidden></div>
 </div>
 
 {% if posts | length %}

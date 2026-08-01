@@ -84,7 +84,7 @@ module.exports = {
   // Halls of Fame — logo wall (logos in /assets/img/logos). type svg = monochrome (tinted white), png = full color.
   // ordered most-recent first (left) → oldest (right)
   halls: [
-    { logo: "microsoft.svg", org: "Microsoft", note: { vi: "Hall of Fame · Leaderboard MSRC Q1 2026", en: "Hall of Fame · MSRC Q1 2026 Leaderboard" }, years: "2019, 2026", link: "https://msrc.microsoft.com/leaderboard", img: "recognitions/microsoft-q1-2026.jpg" },
+    { logo: "microsoft.svg", org: "Microsoft", note: { vi: "Hall of Fame · Leaderboard MSRC Q1 & Q2 2026", en: "Hall of Fame · MSRC Q1 & Q2 2026 Leaderboard" }, years: "2019, 2026", link: "https://msrc.microsoft.com/leaderboard", imgs: ["/assets/img/recognitions/microsoft-q1-2026.jpg", "/assets/img/recognitions/microsoft-q2-2026.webp"] },
     { logo: "apple.svg", org: "Apple", note: { vi: "Hall of Fame ×4", en: "Hall of Fame ×4" }, years: "2021", link: "https://support.apple.com/en-us/102812", img: "recognitions/apple.jpg" },
     { logo: "cert-offsec.png", org: "OffSec", note: { vi: "Friends of Offensive Security ×2", en: "Friends of Offensive Security ×2" }, years: "2021", link: "https://www.offsec.com/community/bug-bounty/", img: "recognitions/offsec.jpg" },
     { logo: "google.svg", org: "Google", note: { vi: "Hall of Fame & Honorable Mentions", en: "Hall of Fame & Honorable Mentions" }, years: "2020", link: "https://bughunter.withgoogle.com/profile/79ea3f0e-1d69-4a97-80e3-5cb62636ee89", img: "recognitions/google.jpg" },

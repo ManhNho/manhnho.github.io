@@ -377,6 +377,21 @@ a:hover { color: var(--red); }
   transition: border-color .2s, color .2s;
 }
 .lightbox-close:hover { border-color: var(--red); color: var(--red-bright); }
+.lb-nav {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; cursor: pointer;
+  width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: rgba(23, 23, 23, .85); border: 1px solid var(--line); color: #fff; font-size: 1.7rem; line-height: 1;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.lb-nav:hover { border-color: var(--red); color: var(--red-bright); }
+.lb-prev { left: 1.2rem; }
+.lb-next { right: 1.2rem; }
+.lb-counter {
+  position: absolute; bottom: 1.2rem; left: 50%; transform: translateX(-50%); z-index: 3;
+  font-size: .72rem; letter-spacing: .14em; color: var(--text-dim);
+  background: rgba(10, 10, 10, .8); border: 1px solid var(--line); border-radius: 999px; padding: .3rem .9rem;
+}
+@media (max-width: 560px) { .lb-prev { left: .4rem; } .lb-next { right: .4rem; } .lb-nav { width: 42px; height: 42px; } }
 .lb-glitch {
   width: auto; aspect-ratio: auto; max-width: 92vw; max-height: 86vh;
   border-radius: 12px; border: 1px solid var(--line);
