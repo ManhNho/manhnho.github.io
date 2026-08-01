@@ -176,7 +176,70 @@ document.querySelectorAll(".glitch").forEach((glitch) => {
   glitch.addEventListener("touchend", off);
 });
 
-// ---- Lightbox: click a cert/recognition card to view its image (with glitch) ----
+// ---- POV gallery: show a random subset each load (static site, client-side random) ----
+(() => {
+  const g = document.getElementById("pov-gallery");
+  if (!g) return;
+  let all = [];
+  try { all = JSON.parse(g.dataset.images) || []; } catch (e) { all = []; }
+  const DEFAULT = Math.min(parseInt(g.dataset.count || "5", 10), all.length) || 5;
+  const input = document.getElementById("pov-count");
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function clamp(n) { return Math.max(1, Math.min(all.length, n)); }
+  function render(n) {
+    const pick = shuffle(all).slice(0, n);
+    g.innerHTML = "";
+    pick.forEach((src, i) => {
+      const id = String(i + 1).padStart(2, "0");
+      const tile = document.createElement("button");
+      tile.type = "button";
+      tile.className = "pov-tile";
+      tile.setAttribute("data-img", src);
+      tile.setAttribute("aria-label", "POV " + id);
+      tile.style.animationDelay = (i * 0.05).toFixed(2) + "s";
+      tile.innerHTML =
+        '<img src="' + src + '" alt="POV ' + id + '" loading="lazy">' +
+        '<span class="pov-frame" aria-hidden="true"></span>' +
+        '<span class="pov-idx mono">' + id + '</span>' +
+        '<span class="pov-meta mono">POV_' + id + '<span class="pov-open">OPEN &#9656;</span></span>';
+      g.appendChild(tile);
+    });
+  }
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function reset() {
+    if (input) input.value = pad(DEFAULT);
+    render(DEFAULT);
+  }
+
+  // typing a number re-renders that many; F5 (fresh load) and Shuffle reset to default
+  if (input) {
+    input.addEventListener("input", () => {
+      const digits = input.value.replace(/\D/g, "").slice(0, 3);
+      if (input.value !== digits) input.value = digits;
+      if (!digits) return; // wait for a valid number
+      render(clamp(parseInt(digits, 10)));
+    });
+    input.addEventListener("blur", () => {
+      const n = clamp(parseInt(input.value, 10) || DEFAULT);
+      input.value = pad(n);
+      render(n);
+    });
+  }
+  const btn = document.getElementById("pov-shuffle");
+  if (btn) btn.addEventListener("click", reset);
+
+  reset();
+})();
+
+// ---- Lightbox: click a cert/recognition/gallery image to view it (with glitch) ----
 (() => {
   const box = document.getElementById("lightbox");
   if (!box) return;
@@ -205,23 +268,23 @@ document.querySelectorAll(".glitch").forEach((glitch) => {
     lbImg.src = "";
   }
 
-  // open on card click / keyboard, but let the "Verify" link navigate normally
-  document.querySelectorAll("[data-img]").forEach((card) => {
-    card.addEventListener("click", (e) => {
+  // delegation so dynamically-added gallery tiles work too; the "Verify" link opts out
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".verify-link")) return;
+    const card = e.target.closest("[data-img]");
+    if (!card || box.contains(card)) return;
+    e.preventDefault();
+    open(card.getAttribute("data-img"));
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
       if (e.target.closest(".verify-link")) return;
-      e.preventDefault();
-      open(card.getAttribute("data-img"));
-    });
-    card.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        if (e.target.closest(".verify-link")) return;
-        e.preventDefault();
-        open(card.getAttribute("data-img"));
-      }
-    });
+      const card = e.target.closest("[data-img]");
+      if (card && !box.contains(card)) { e.preventDefault(); open(card.getAttribute("data-img")); }
+    }
+    if (e.key === "Escape" && !box.hidden) close();
   });
 
   closeBtn.addEventListener("click", close);
   box.addEventListener("click", (e) => { if (e.target === box) close(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !box.hidden) close(); });
 })();

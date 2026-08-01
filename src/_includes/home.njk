@@ -106,6 +106,22 @@
   </div>
 </section>
 
+{% if gallery | length %}
+<section class="section reveal">
+  <h2 class="section-title">{{ t[lang].gallery }}</h2>
+  <div class="pov-cmd mono">
+    <span class="pov-prompt">manhnho@hangout</span><span class="pov-colon">:</span><span class="pov-path">~/pov</span><span class="pov-dollar">$</span>
+    shuf *.jpg | head -<input id="pov-count" class="pov-count mono" type="text" inputmode="numeric" maxlength="3" value="05" aria-label="{{ t[lang].gallery_count_aria }}"><span class="pov-cursor">▊</span>
+  </div>
+  <div id="pov-gallery" class="pov-gallery"
+       data-images='{{ gallery | dump | safe }}'
+       data-count="5"></div>
+  <div class="pov-actions">
+    <button id="pov-shuffle" class="pov-shuffle mono" type="button">./shuffle {{ t[lang].gallery_shuffle }} ⟳</button>
+  </div>
+</section>
+{% endif %}
+
 {# Lightbox for cert / recognition images (with the same glitch effect as the avatar) #}
 <div id="lightbox" class="lightbox" hidden aria-modal="true" role="dialog">
   <button class="lightbox-close" aria-label="Close">✕</button>
