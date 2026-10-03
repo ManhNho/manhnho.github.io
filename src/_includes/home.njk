@@ -5,7 +5,11 @@
   <div class="hero-text">
     <h1 class="hero-name">Manh Pham</h1>
     <p class="hero-role">{{ t[lang].hero_role }}</p>
-    <p class="hero-intro">{{ t[lang].hero_intro }}</p>
+
+    <div class="hero-spotlight">
+      <p>{{ t[lang].hero_biz }}</p>
+      <p>{{ t[lang].hero_intro }}</p>
+    </div>
 
     <div class="hero-meta">
       {% for s in site.stats %}
@@ -23,7 +27,7 @@
 
   <div class="hero-portrait">
     <div class="glitch">
-      <img src="/assets/img/acropolis/portrait.jpg" alt="Pham Tien Manh — ManhNho">
+      <img src="/assets/img/acropolis/portrait.jpg" alt="Pham Tien Manh — ManhNho" width="340" height="453" fetchpriority="high">
       <div class="glitch__layers" aria-hidden="true">
         <div class="glitch__layer" style="background-image:url('/assets/img/acropolis/portrait.jpg')"></div>
         <div class="glitch__layer" style="background-image:url('/assets/img/acropolis/portrait.jpg')"></div>
@@ -34,20 +38,73 @@
 </section>
 
 {% set extIcon %}<svg class="ext-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>{% endset %}
+{% set chevron %}<svg class="section-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>{% endset %}
+
+{# ---- Wanted Board: custom pen-and-ink insect badge icons ---- #}
+{% set wbIcons = {
+  revenue: "grasshopper",
+  client: "beetle",
+  global: "mosquito",
+  team: "wasp",
+  engineer: "spider",
+  partner: "bee",
+  capital: "scorpion",
+  product: "mantis",
+  cert: "moth",
+  stage: "cicada",
+  globalRev: "rhino-beetle",
+  presence: "flea"
+} %}
+{% macro wbIcon(key) %}
+<img src="/assets/img/wb/{{ wbIcons[key] }}.png" alt="{{ key }}" loading="lazy" width="72" height="72">
+{% endmacro %}
+
+{% set starFilled %}<svg class="wb-star filled" viewBox="0 0 16 16" width="13" height="13"><path d="M8 1l2.2 4.4L15 6.3l-3.5 3.4.8 4.9L8 12.4l-4.3 2.2.8-4.9L1 6.3l4.8-.9L8 1z" fill="currentColor" stroke="none"/></svg>{% endset %}
+{% set starEmpty %}<svg class="wb-star empty" viewBox="0 0 16 16" width="13" height="13"><path d="M8 1l2.2 4.4L15 6.3l-3.5 3.4.8 4.9L8 12.4l-4.3 2.2.8-4.9L1 6.3l4.8-.9L8 1z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>{% endset %}
 
 <section class="section reveal">
-  <h2 class="section-title">{{ t[lang].recognition }}</h2>
+  <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-wanted">{{ t[lang].wb_title }} {{ chevron | safe }}</button></h2>
+  <div class="section-body" id="sb-wanted">
+    <div class="wb-sub">
+      <span class="wb-logo" aria-label="CyPeace">{% for ch in ["c","y","p","e1","a","c2","e2"] %}<img src="/assets/img/logos/cp-{{ ch }}.png" alt="" class="wb-logo-ch" loading="lazy">{% endfor %}</span>
+    </div>
+    <div class="wb-tabs">
+      <button class="wb-tab is-active" data-wb-tab="achieved">{{ t[lang].wb_tab_achieved }} ({{ site.wbCounts.achieved }})</button>
+      <button class="wb-tab" data-wb-tab="progress">{{ t[lang].wb_tab_progress }} ({{ site.wbCounts.progress }})</button>
+      <button class="wb-tab" data-wb-tab="locked">{{ t[lang].wb_tab_locked }} ({{ site.wbCounts.locked }})</button>
+    </div>
+    <div class="wb-grid" data-wb-view="achieved">
+      {% for w in site.wantedBoard %}
+      {% if w._tab != "hidden" %}
+      <div class="wb-card{% if w.status == 'captured' %} done{% elif w.status == 'in-progress' %} active{% elif w.status == 'locked' %} locked{% endif %}" data-wb-tab="{{ w._tab }}" role="button" tabindex="0" aria-label="{{ w.name[lang] }}">
+        <span class="wb-cat">{{ w.cat[lang] }}</span>
+        <div class="wb-card-icon">{{ wbIcon(w.icon) }}</div>
+        <div class="wb-stars">{% for i in range(0, w.stars) %}{{ starFilled | safe }}{% endfor %}{% for i in range(w.stars, 5) %}{{ starEmpty | safe }}{% endfor %}</div>
+        <div class="wb-card-name">{{ w.name[lang] }}</div>
+        {% if w.date %}<div class="wb-card-date">{{ w.date[lang] }}</div>{% endif %}
+        {% if w.status == "in-progress" %}<div class="wb-card-date wip">{{ t[lang].wb_in_progress }}</div>{% endif %}
+        <div class="wb-card-desc">{{ w.desc[lang] }}</div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-recognition">{{ t[lang].recognition }} {{ chevron | safe }}</button></h2>
+  <div class="section-body" id="sb-recognition">
 
   <div class="pinned-grid">
     {% for p in site.pinned %}
-    <div class="pinned-card" data-img="/assets/img/{{ p.img }}" role="button" tabindex="0" aria-label="{{ p.rank }}">
+    <div class="pinned-card" data-img="/assets/img/{{ p.img }}" role="button" tabindex="0" aria-label="{{ p.rank }} — {{ t[lang].view_hint }}">
       <span class="pin-flag">{{ t[lang].pinned_label }}</span>
       <div class="pin-head">
         <img src="/assets/img/{{ p.logo }}" alt="" class="pin-logo{% if p.tint %} tint{% endif %}">
-        <span class="pin-rank">{{ p.rank }}</span>
+        <span class="pin-rank">{{ p.rank | safe }}</span>
       </div>
       <p class="pin-text">{{ p[lang] | safe }}</p>
-      <a class="pin-foot verify-link" href="{{ p.link }}" target="_blank" rel="noopener">{{ p.year }} · {{ t[lang].verify }} {{ extIcon | safe }}</a>
+      <a class="pin-foot verify-link" href="{{ p.link }}" target="_blank" rel="noopener noreferrer">{{ p.year }} · {{ t[lang].verify }} {{ extIcon | safe }}</a>
     </div>
     {% endfor %}
   </div>
@@ -56,18 +113,18 @@
     <span class="rail-label">Synack Acropolis</span>
     <div class="awards-by-year">
       {% for r in site.recognitions %}
-      <div class="year-group" data-img="/assets/img/{{ r.img }}" role="button" tabindex="0" aria-label="Synack {{ r.year }}">
+      <div class="year-group" data-img="/assets/img/{{ r.img }}" role="button" tabindex="0" aria-label="Synack {{ r.year }} — {{ t[lang].view_hint }}">
         <div class="yr">{{ r.year }}</div>
         <div class="year-node"></div>
         <div class="year-badges">
           {% for b in r.badges %}
           <div class="badge">
-            <img src="/assets/img/acropolis/{{ b.img }}" alt="{{ b.name }}">
+            <img src="/assets/img/acropolis/{{ b.img }}" alt="{{ b.name }}" width="80" height="80" loading="lazy">
             <span class="bname">{{ b.name }}</span>
           </div>
           {% endfor %}
         </div>
-        <a class="year-verify verify-link" href="{{ r.link }}" target="_blank" rel="noopener">{{ t[lang].verify }} {{ extIcon | safe }}</a>
+        <a class="year-verify verify-link" href="{{ r.link }}" target="_blank" rel="noopener noreferrer">{{ t[lang].verify }} {{ extIcon | safe }}</a>
       </div>
       {% endfor %}
     </div>
@@ -76,54 +133,98 @@
   <h3 class="sub-label">{{ t[lang].hall_of_fame_label }}</h3>
   <div class="logo-wall">
     {% for h in site.halls %}
-    <div class="logo-cell" data-img='{% if h.imgs %}{{ h.imgs | dump | safe }}{% else %}/assets/img/{{ h.img }}{% endif %}' role="button" tabindex="0" aria-label="{{ h.org }}">
+    <div class="logo-cell" data-img='{% if h.imgs %}{{ h.imgs | dump | safe }}{% else %}/assets/img/{{ h.img }}{% endif %}' role="button" tabindex="0" aria-label="{{ h.org }} — {{ t[lang].view_hint }}">
       <div class="logo-top">
-        <img class="brand-logo" src="/assets/img/logos/{{ h.logo }}" alt="{{ h.org }}">
+        <img class="brand-logo" src="/assets/img/logos/{{ h.logo }}" alt="{{ h.org }}" width="128" height="40" loading="lazy">
       </div>
       <div class="logo-note">{{ h.note[lang] }}</div>
       <div class="logo-foot">
         <span class="logo-year">{{ h.years }}</span>
-        <a class="verify-tag verify-link" href="{{ h.link }}" target="_blank" rel="noopener">{{ t[lang].verify }} {{ extIcon | safe }}</a>
+        <a class="verify-tag verify-link" href="{{ h.link }}" target="_blank" rel="noopener noreferrer">{{ t[lang].verify }} {{ extIcon | safe }}</a>
       </div>
     </div>
     {% endfor %}
   </div>
+  </div>
 </section>
 
 <section class="section reveal">
-  <h2 class="section-title">{{ t[lang].certs }}</h2>
+  <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-certs">{{ t[lang].certs }} {{ chevron | safe }}</button></h2>
+  <div class="section-body" id="sb-certs">
   <div class="cert-grid">
     {% for c in site.certs %}
-    <div class="cert-card" data-img="/assets/img/{{ c.img }}" role="button" tabindex="0" aria-label="{{ c.name }}">
-      <img class="cert-logo {{ c.type }}" src="/assets/img/logos/{{ c.logo }}" alt="{{ c.vendor }}">
+    <div class="cert-card" data-img="/assets/img/{{ c.img }}" role="button" tabindex="0" aria-label="{{ c.name }} — {{ t[lang].view_hint }}">
+      <img class="cert-logo {{ c.type }}" src="/assets/img/logos/{{ c.logo }}" alt="{{ c.vendor }}" width="48" height="48" loading="lazy">
       <div class="cert-info">
         <div class="cert-name">{{ c.name }}</div>
         <div class="cert-vendor">{{ c.vendor }} · {{ c.year }}</div>
       </div>
-      <a class="cert-verify verify-link" href="{{ c.link }}" target="_blank" rel="noopener">{{ t[lang].verify }} {{ extIcon | safe }}</a>
+      <a class="cert-verify verify-link" href="{{ c.link }}" target="_blank" rel="noopener noreferrer">{{ t[lang].verify }} {{ extIcon | safe }}</a>
     </div>
     {% endfor %}
   </div>
+  </div>
 </section>
+
+{% if site.press | length %}
+<section class="section reveal">
+  <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-press">{{ t[lang].press_title }} {{ chevron | safe }}</button></h2>
+  <div class="section-body" id="sb-press">
+  <div class="press-paper">
+    <div class="press-mast">
+      <div class="press-mast-rule heavy"></div>
+      <div class="press-mast-name">{{ t[lang].press_title }}</div>
+      <div class="press-mast-rule light"></div>
+      <div class="press-mast-sub">
+        <span class="press-mast-tag">Pham Tien Manh</span>
+        <span class="press-mast-tag">ManhNho</span>
+      </div>
+    </div>
+    <div class="press-page-num left">2</div>
+    <div class="press-page-num right">3</div>
+    <div class="press-spread">
+      {% for p in site.press %}
+      <a class="press-art{% if p.img %} has-img{% endif %}" href="{{ p.link }}" target="_blank" rel="noopener noreferrer" style="--clip-accent: {{ p.color }}">
+        <div class="press-art-src">
+          <img src="/assets/img/press/{{ p.icon }}.png" alt="" class="press-art-icon" width="16" height="16" loading="lazy">
+          <span class="press-art-pub">{{ p.pub }}</span>
+          <span class="press-art-date">{{ p.date }}</span>
+        </div>
+        {% if p.img %}
+        <div class="press-art-photo">
+          <img src="/assets/img/press/{{ p.img }}" alt="" loading="lazy">
+        </div>
+        {% endif %}
+        <div class="press-art-hl">{{ p.title }}</div>
+        <span class="press-art-read">{{ t[lang].press_read }} {{ extIcon | safe }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  </div>
+</section>
+{% endif %}
 
 {% if gallery | length %}
 <section class="section reveal">
-  <h2 class="section-title">{{ t[lang].gallery }}</h2>
+  <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-gallery">{{ t[lang].gallery }} {{ chevron | safe }}</button></h2>
+  <div class="section-body" id="sb-gallery">
   <div class="pov-cmd mono">
     <span class="pov-prompt">manhnho@hangout</span><span class="pov-colon">:</span><span class="pov-path">~/pov</span><span class="pov-dollar">$</span>
-    shuf *.jpg | head -<input id="pov-count" class="pov-count mono" type="text" inputmode="numeric" maxlength="3" value="05" aria-label="{{ t[lang].gallery_count_aria }}"><span class="pov-cursor">▊</span>
+    shuf *.jpg | head -<input id="pov-count" class="pov-count mono" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" value="05" aria-label="{{ t[lang].gallery_count_aria }}"><span class="pov-cursor">▊</span>
   </div>
-  <div id="pov-gallery" class="pov-gallery"
+  <div id="pov-gallery" class="pov-gallery" aria-live="polite"
        data-images='{{ gallery | dump | safe }}'
        data-count="5"></div>
   <div class="pov-actions">
     <button id="pov-shuffle" class="pov-shuffle mono" type="button">./shuffle {{ t[lang].gallery_shuffle }} ⟳</button>
   </div>
+  </div>
 </section>
 {% endif %}
 
 {# Lightbox for cert / recognition images (with the same glitch effect as the avatar) #}
-<div id="lightbox" class="lightbox" hidden aria-modal="true" role="dialog">
+<div id="lightbox" class="lightbox" hidden aria-modal="true" role="dialog" aria-label="Image viewer">
   <button class="lightbox-close" aria-label="Close">✕</button>
   <button id="lb-prev" class="lb-nav lb-prev" aria-label="Previous" hidden>‹</button>
   <button id="lb-next" class="lb-nav lb-next" aria-label="Next" hidden>›</button>
@@ -140,7 +241,8 @@
 
 {% if posts | length %}
 <section class="section reveal">
-  <h2 class="section-title">{{ t[lang].latest_posts }}</h2>
+  <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-posts">{{ t[lang].latest_posts }} {{ chevron | safe }}</button></h2>
+  <div class="section-body" id="sb-posts">
   <div class="post-list">
     {% for post in posts %}
       {% if loop.index <= 3 %}
@@ -153,5 +255,6 @@
     {% endfor %}
   </div>
   <p style="margin-top:1.2rem"><a class="mono" href="{{ blogUrl }}">{{ t[lang].all_posts }}</a></p>
+  </div>
 </section>
 {% endif %}

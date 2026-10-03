@@ -1,3 +1,31 @@
+// Activate preloaded Google Fonts (non-render-blocking)
+var gf = document.getElementById("gfonts");
+if (gf) gf.rel = "stylesheet";
+
+// Hero spotlight: text glows near cursor
+document.querySelectorAll('.hero-spotlight').forEach(el => {
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+  el.addEventListener('mouseleave', () => {
+    el.style.setProperty('--mx', '-200px');
+    el.style.setProperty('--my', '-200px');
+  });
+});
+
+// Section collapse/expand toggle
+document.querySelectorAll('.section > .section-title').forEach(title => {
+  const btn = title.querySelector('button');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const section = title.closest('.section');
+    const collapsed = section.classList.toggle('is-collapsed');
+    btn.setAttribute('aria-expanded', String(!collapsed));
+  });
+});
+
 // Reveal-on-scroll animation
 const observer = new IntersectionObserver(
   (entries) => {
@@ -205,11 +233,18 @@ document.querySelectorAll(".glitch").forEach((glitch) => {
       tile.setAttribute("data-img", src);
       tile.setAttribute("aria-label", "POV " + id);
       tile.style.animationDelay = (i * 0.05).toFixed(2) + "s";
-      tile.innerHTML =
-        '<img src="' + src + '" alt="POV ' + id + '" loading="lazy">' +
-        '<span class="pov-frame" aria-hidden="true"></span>' +
-        '<span class="pov-idx mono">' + id + '</span>' +
-        '<span class="pov-meta mono">POV_' + id + '<span class="pov-open">OPEN &#9656;</span></span>';
+      const img = document.createElement("img");
+      img.src = src; img.alt = "POV " + id; img.loading = "lazy";
+      const frame = document.createElement("span");
+      frame.className = "pov-frame"; frame.setAttribute("aria-hidden", "true");
+      const idx = document.createElement("span");
+      idx.className = "pov-idx mono"; idx.textContent = id;
+      const meta = document.createElement("span");
+      meta.className = "pov-meta mono"; meta.textContent = "POV_" + id;
+      const openLabel = document.createElement("span");
+      openLabel.className = "pov-open"; openLabel.textContent = "OPEN ▶";
+      meta.appendChild(openLabel);
+      tile.append(img, frame, idx, meta);
       g.appendChild(tile);
     });
   }
@@ -259,33 +294,46 @@ document.querySelectorAll(".glitch").forEach((glitch) => {
     if (raw[0] === "[") { try { const a = JSON.parse(raw); return Array.isArray(a) ? a : [raw]; } catch (e) { return [raw]; } }
     return [raw];
   }
+  function sanitizeSrc(s) { return /^[\/a-zA-Z0-9._\-:%]+$/.test(s) ? s : ""; }
   function show(i) {
     idx = (i + imgs.length) % imgs.length;
-    const src = imgs[idx];
+    const src = sanitizeSrc(imgs[idx]);
     lbImg.src = src;
-    if (layers[0]) layers[0].style.backgroundImage = `url('${src}')`;
-    if (layers[1]) layers[1].style.backgroundImage = `url('${src}')`;
+    if (layers[0]) layers[0].style.backgroundImage = "url('" + src + "')";
+    if (layers[1]) layers[1].style.backgroundImage = "url('" + src + "')";
     const multi = imgs.length > 1;
     prevBtn.hidden = nextBtn.hidden = counter.hidden = !multi;
     if (multi) counter.textContent = (idx + 1) + " / " + imgs.length;
-    // cool glitch burst on each change
     lbGlitch.classList.add("is-glitching");
     clearTimeout(burst);
     burst = setTimeout(() => lbGlitch.classList.remove("is-glitching"), 650);
   }
-  function open(raw) {
+  let prevFocus = null;
+  function open(raw, triggerLabel) {
     imgs = parseImgs(raw);
     if (!imgs.length) return;
+    lbImg.alt = triggerLabel || "Image";
+    prevFocus = document.activeElement;
     show(0);
     box.hidden = false;
     document.body.style.overflow = "hidden";
+    closeBtn.focus();
   }
   function close() {
     box.hidden = true;
     document.body.style.overflow = "";
     lbImg.src = "";
+    lbImg.alt = "";
     imgs = [];
+    if (prevFocus) { prevFocus.focus(); prevFocus = null; }
   }
+  box.addEventListener("keydown", (e) => {
+    if (e.key !== "Tab") return;
+    const focusable = box.querySelectorAll("button:not([hidden])");
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
 
   // delegation so dynamically-added gallery tiles work too; the "Verify" link opts out
   document.addEventListener("click", (e) => {
@@ -293,13 +341,13 @@ document.querySelectorAll(".glitch").forEach((glitch) => {
     const card = e.target.closest("[data-img]");
     if (!card || box.contains(card)) return;
     e.preventDefault();
-    open(card.getAttribute("data-img"));
+    open(card.getAttribute("data-img"), card.getAttribute("aria-label") || "");
   });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       if (e.target.closest(".verify-link")) return;
       const card = e.target.closest("[data-img]");
-      if (card && !box.contains(card)) { e.preventDefault(); open(card.getAttribute("data-img")); }
+      if (card && !box.contains(card)) { e.preventDefault(); open(card.getAttribute("data-img"), card.getAttribute("aria-label") || ""); }
     }
     if (box.hidden) return;
     if (e.key === "Escape") close();
@@ -312,3 +360,23 @@ document.querySelectorAll(".glitch").forEach((glitch) => {
   closeBtn.addEventListener("click", close);
   box.addEventListener("click", (e) => { if (e.target === box) close(); });
 })();
+
+/* ---- Wanted Board tab switching ---- */
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".wb-tab");
+  if (!btn) return;
+  const view = btn.dataset.wbTab;
+  btn.closest(".wb-tabs").querySelectorAll(".wb-tab").forEach(t => t.classList.remove("is-active"));
+  btn.classList.add("is-active");
+  const grid = btn.closest(".section-body").querySelector(".wb-grid");
+  if (grid) grid.dataset.wbView = view;
+});
+
+/* ---- Wanted Board card click flash ---- */
+document.addEventListener("click", (e) => {
+  const card = e.target.closest(".wb-card");
+  if (!card || card.classList.contains("wb-flash")) return;
+  card.classList.add("wb-flash");
+  const dur = card.classList.contains("locked") ? 2000 : 3000;
+  setTimeout(() => card.classList.remove("wb-flash"), dur);
+});

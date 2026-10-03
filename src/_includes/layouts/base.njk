@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   {# ---- client-side security hardening (static host can't set HTTP headers) ---- #}
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 
   {% set isPost = (ogType == "article") %}
   {# ---- canonical + language alternates ---- #}
@@ -14,9 +15,9 @@
   {% if lang == "en" %}{% set altUrl = site.url + "/vi" + page.url %}{% else %}{% set altUrl = site.url + (page.url | replace("/vi/", "/")) %}{% endif %}
 
   {# ---- SEO title (tab/SERP only) ---- #}
-  {% if isPost %}{% set pageTitle = title + " · ManhNho (Pham Tien Manh)" %}
-  {% elif title %}{% set pageTitle = title + " · ManhNho — Pham Tien Manh" %}
-  {% else %}{% set pageTitle = "ManhNho (Pham Tien Manh) — Bug Bounty Hunter, Red Teamer & CyPeace CEO" %}{% endif %}
+  {% if isPost %}{% set pageTitle = title + " · ManhNho" %}
+  {% elif title %}{% set pageTitle = title + " · ManhNho" %}
+  {% else %}{% set pageTitle = "ManhNho" %}{% endif %}
   {% set metaDesc = description or site.person.description %}
   {% set ogImage = site.url + "/assets/img/acropolis/portrait.jpg" %}
   {% set ogTypeVal = ogType or "website" %}
@@ -59,7 +60,8 @@
   <link rel="alternate" type="application/rss+xml" title="ManhNho — Blog" href="{{ site.url }}{{ '/feed.xml' if lang == 'en' else '/vi/feed.xml' }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" id="gfonts" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="/assets/css/main.css">
   <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
 
@@ -129,6 +131,7 @@
   {% endif %}
 </head>
 <body>
+  <a href="#main" class="skip-link">Skip to content</a>
   <div class="bg-grid" aria-hidden="true"></div>
   <div class="scanline" aria-hidden="true"></div>
 
@@ -151,17 +154,16 @@
     </nav>
   </header>
 
-  <main class="container">
+  <main id="main" class="container">
     {{ content | safe }}
   </main>
 
   <footer class="site-footer">
     <div class="container footer-inner">
       <div class="footer-social">
-        <a href="{{ site.social.github }}" target="_blank" rel="noopener">GitHub</a>
-        <a href="{{ site.social.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="{{ site.social.acropolis }}" target="_blank" rel="noopener">Synack Acropolis</a>
-        <a href="{{ site.social.company }}" target="_blank" rel="noopener">CyPeace</a>
+        <a href="{{ site.social.github }}" target="_blank" rel="noopener noreferrer" title="Opens in new tab">GitHub</a>
+        <a href="{{ site.social.linkedin }}" target="_blank" rel="noopener noreferrer" title="Opens in new tab">LinkedIn</a>
+        <a href="{{ site.social.company }}" target="_blank" rel="noopener noreferrer" title="Opens in new tab">CyPeace</a>
       </div>
       <p class="footer-note">© {% year %} Pham Tien Manh</p>
     </div>

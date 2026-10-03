@@ -11,5 +11,8 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1"
+  },
+  "dependencies": {
+    "sharp": "^0.35.5"
   }
 }
