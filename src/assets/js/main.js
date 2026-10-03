@@ -40,6 +40,59 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 
+// ---- Section nav: show one panel at a time ----
+(() => {
+  const nav = document.getElementById("section-nav");
+  if (!nav) return;
+  const tabs = nav.querySelectorAll(".snav-tab");
+  const panels = document.querySelectorAll(".section-panel");
+  const inner = nav.querySelector(".section-nav-inner");
+  if (!tabs.length || !panels.length) return;
+
+  function updateFade() {
+    if (!inner) return;
+    var atEnd = inner.scrollLeft + inner.clientWidth >= inner.scrollWidth - 2;
+    nav.classList.toggle("scrolled-end", atEnd);
+  }
+  if (inner) inner.addEventListener("scroll", updateFade, { passive: true });
+  updateFade();
+
+  function activate(id, scroll) {
+    tabs.forEach(t => {
+      var sel = t.dataset.section === id;
+      t.classList.toggle("is-active", sel);
+      t.setAttribute("aria-selected", String(sel));
+      t.setAttribute("tabindex", sel ? "0" : "-1");
+      if (sel && inner) t.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    });
+    panels.forEach(p => {
+      var active = p.dataset.sectionPanel === id;
+      p.classList.toggle("is-active-panel", active);
+      if (active) p.style.animation = "none", p.offsetHeight, p.style.animation = "";
+    });
+    history.replaceState(null, "", id ? "#" + id : location.pathname);
+    if (scroll) nav.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  tabs.forEach(t => t.addEventListener("click", () => activate(t.dataset.section, true)));
+
+  nav.addEventListener("keydown", function (e) {
+    var idx = Array.from(tabs).indexOf(document.activeElement);
+    if (idx < 0) return;
+    var next = -1;
+    if (e.key === "ArrowRight") next = (idx + 1) % tabs.length;
+    else if (e.key === "ArrowLeft") next = (idx - 1 + tabs.length) % tabs.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = tabs.length - 1;
+    if (next >= 0) { e.preventDefault(); tabs[next].focus(); activate(tabs[next].dataset.section, true); }
+  });
+
+  tabs.forEach(t => { if (!t.classList.contains("is-active")) t.setAttribute("tabindex", "-1"); });
+
+  var hash = location.hash.slice(1);
+  if (hash && document.querySelector('[data-section-panel="' + hash + '"]')) activate(hash, false);
+})();
+
 // ---- Blog: live search + tag filter + pagination (5 per page) ----
 (() => {
   const results = document.getElementById("post-results");
@@ -235,6 +288,7 @@ document.querySelectorAll(".glitch").forEach((glitch) => {
       tile.style.animationDelay = (i * 0.05).toFixed(2) + "s";
       const img = document.createElement("img");
       img.src = src; img.alt = "POV " + id; img.loading = "lazy";
+      img.width = 180; img.height = 225;
       const frame = document.createElement("span");
       frame.className = "pov-frame"; frame.setAttribute("aria-hidden", "true");
       const idx = document.createElement("span");

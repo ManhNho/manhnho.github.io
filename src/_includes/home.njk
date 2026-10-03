@@ -4,7 +4,7 @@
 <section class="hero">
   <div class="hero-text">
     <h1 class="hero-name">Manh Pham</h1>
-    <p class="hero-role">{{ t[lang].hero_role }}</p>
+    <p class="hero-role">CEO · Security Expert · <span class="nowrap">Bug Bounty Hunter</span></p>
 
     <div class="hero-spotlight">
       <p>{{ t[lang].hero_biz }}</p>
@@ -20,7 +20,7 @@
     <blockquote class="hero-quote">"{{ site.motto[lang] }}"</blockquote>
 
     <div class="hero-flag">
-      <img src="/assets/img/acropolis/vn.svg" alt="Vietnam">
+      <img src="/assets/img/acropolis/vn.svg" alt="Vietnam" width="30" height="20">
       <span>Hanoi, Vietnam</span>
     </div>
   </div>
@@ -42,6 +42,20 @@
 
 {% set extIcon %}<svg class="ext-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>{% endset %}
 {% set chevron %}<svg class="section-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>{% endset %}
+
+{# ---- Section navigation bar ---- #}
+<nav class="section-nav" id="section-nav" aria-label="Page sections">
+  <div class="section-nav-inner container" role="tablist">
+    <button class="snav-tab is-active" id="tab-wanted" data-section="wanted" role="tab" aria-selected="true" aria-controls="panel-wanted">{{ t[lang].wb_title }}</button>
+    <button class="snav-tab" id="tab-recognition" data-section="recognition" role="tab" aria-selected="false" aria-controls="panel-recognition">{{ t[lang].recognition }}</button>
+    <button class="snav-tab" id="tab-certs" data-section="certs" role="tab" aria-selected="false" aria-controls="panel-certs">{{ t[lang].certs }}</button>
+    {% if site.press | length %}<button class="snav-tab" id="tab-press" data-section="press" role="tab" aria-selected="false" aria-controls="panel-press">{{ t[lang].press_title }}</button>{% endif %}
+    {% if gallery | length %}<button class="snav-tab" id="tab-gallery" data-section="gallery" role="tab" aria-selected="false" aria-controls="panel-gallery">{{ t[lang].gallery }}</button>{% endif %}
+    {% if posts | length %}<button class="snav-tab" id="tab-posts" data-section="posts" role="tab" aria-selected="false" aria-controls="panel-posts">{{ t[lang].latest_posts }}</button>{% endif %}
+  </div>
+</nav>
+
+<div id="section-panels">
 
 {# ---- Wanted Board: custom pen-and-ink insect badge icons ---- #}
 {% set wbIcons = {
@@ -65,11 +79,11 @@
 {% set starFilled %}<svg class="wb-star filled" viewBox="0 0 16 16" width="13" height="13"><path d="M8 1l2.2 4.4L15 6.3l-3.5 3.4.8 4.9L8 12.4l-4.3 2.2.8-4.9L1 6.3l4.8-.9L8 1z" fill="currentColor" stroke="none"/></svg>{% endset %}
 {% set starEmpty %}<svg class="wb-star empty" viewBox="0 0 16 16" width="13" height="13"><path d="M8 1l2.2 4.4L15 6.3l-3.5 3.4.8 4.9L8 12.4l-4.3 2.2.8-4.9L1 6.3l4.8-.9L8 1z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>{% endset %}
 
-<section class="section reveal">
+<section class="section section-panel is-active-panel" data-section-panel="wanted" id="panel-wanted" role="tabpanel" aria-labelledby="tab-wanted">
   <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-wanted">{{ t[lang].wb_title }} {{ chevron | safe }}</button></h2>
   <div class="section-body" id="sb-wanted">
     <div class="wb-sub">
-      <span class="wb-logo" aria-label="CyPeace">{% for ch in ["c","y","p","e1","a","c2","e2"] %}<img src="/assets/img/logos/cp-{{ ch }}.png" alt="" class="wb-logo-ch" loading="lazy">{% endfor %}</span>
+      <span class="wb-logo" aria-label="CyPeace">{% for ch in ["c","y","p","e1","a","c2","e2"] %}<img src="/assets/img/logos/cp-{{ ch }}.png" alt="" class="wb-logo-ch" loading="lazy" width="28" height="28" aria-hidden="true">{% endfor %}</span>
     </div>
     <div class="wb-tabs">
       <button class="wb-tab is-active" data-wb-tab="achieved">{{ t[lang].wb_tab_achieved }} ({{ site.wbCounts.achieved }})</button>
@@ -94,7 +108,7 @@
   </div>
 </section>
 
-<section class="section reveal">
+<section class="section section-panel" data-section-panel="recognition" id="panel-recognition" role="tabpanel" aria-labelledby="tab-recognition">
   <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-recognition">{{ t[lang].recognition }} {{ chevron | safe }}</button></h2>
   <div class="section-body" id="sb-recognition">
 
@@ -103,7 +117,7 @@
     <div class="pinned-card" data-img="/assets/img/{{ p.img }}" role="button" tabindex="0" aria-label="{{ p.rank }} — {{ t[lang].view_hint }}">
       <span class="pin-flag">{{ t[lang].pinned_label }}</span>
       <div class="pin-head">
-        <img src="/assets/img/{{ p.logo }}" alt="" class="pin-logo{% if p.tint %} tint{% endif %}">
+        <img src="/assets/img/{{ p.logo }}" alt="{{ p.rank }}" class="pin-logo{% if p.tint %} tint{% endif %}" width="130" height="46">
         <span class="pin-rank">{{ p.rank | safe }}</span>
       </div>
       <p class="pin-text">{{ p[lang] | safe }}</p>
@@ -151,7 +165,7 @@
   </div>
 </section>
 
-<section class="section reveal">
+<section class="section section-panel" data-section-panel="certs" id="panel-certs" role="tabpanel" aria-labelledby="tab-certs">
   <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-certs">{{ t[lang].certs }} {{ chevron | safe }}</button></h2>
   <div class="section-body" id="sb-certs">
   <div class="cert-grid">
@@ -170,7 +184,7 @@
 </section>
 
 {% if site.press | length %}
-<section class="section reveal">
+<section class="section section-panel" data-section-panel="press" id="panel-press" role="tabpanel" aria-labelledby="tab-press">
   <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-press">{{ t[lang].press_title }} {{ chevron | safe }}</button></h2>
   <div class="section-body" id="sb-press">
   <div class="press-paper">
@@ -189,13 +203,13 @@
       {% for p in site.press %}
       <a class="press-art{% if p.img %} has-img{% endif %}" href="{{ p.link }}" target="_blank" rel="noopener noreferrer" style="--clip-accent: {{ p.color }}">
         <div class="press-art-src">
-          <img src="/assets/img/press/{{ p.icon }}.webp" alt="" class="press-art-icon" width="16" height="16" loading="lazy">
+          <img src="/assets/img/press/{{ p.icon }}.webp" alt="" class="press-art-icon" width="16" height="16" loading="lazy" aria-hidden="true">
           <span class="press-art-pub">{{ p.pub }}</span>
           <span class="press-art-date">{{ p.date }}</span>
         </div>
         {% if p.img %}
         <div class="press-art-photo">
-          <img src="/assets/img/press/{{ p.img }}" alt="" loading="lazy">
+          <img src="/assets/img/press/{{ p.img }}" alt="{{ p.title }}" loading="lazy" width="400" height="240">
         </div>
         {% endif %}
         <div class="press-art-hl">{{ p.title }}</div>
@@ -209,7 +223,7 @@
 {% endif %}
 
 {% if gallery | length %}
-<section class="section reveal">
+<section class="section section-panel" data-section-panel="gallery" id="panel-gallery" role="tabpanel" aria-labelledby="tab-gallery">
   <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-gallery">{{ t[lang].gallery }} {{ chevron | safe }}</button></h2>
   <div class="section-body" id="sb-gallery">
   <div class="pov-cmd mono">
@@ -243,7 +257,7 @@
 </div>
 
 {% if posts | length %}
-<section class="section reveal">
+<section class="section section-panel" data-section-panel="posts" id="panel-posts" role="tabpanel" aria-labelledby="tab-posts">
   <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-posts">{{ t[lang].latest_posts }} {{ chevron | safe }}</button></h2>
   <div class="section-body" id="sb-posts">
   <div class="post-list">
@@ -261,3 +275,5 @@
   </div>
 </section>
 {% endif %}
+
+</div>{# /section-panels #}
