@@ -123,7 +123,7 @@ module.exports = {
       pub: "VnExpress", icon: "vnexpress", color: "#b91c4a",
       title: "Phạm Tiến Mạnh — Chuyên gia an ninh mạng & AI Security",
       date: "Profile", link: "https://vnexpress.net/pham-tien-manh-4913244.html",
-      img: "vnexpress-portrait.png",
+      img: "vnexpress-portrait.webp",
     },
     {
       pub: "Bộ TT&TT", icon: "mst", color: "#003366",

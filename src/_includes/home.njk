@@ -27,10 +27,13 @@
 
   <div class="hero-portrait">
     <div class="glitch">
-      <img src="/assets/img/acropolis/portrait.jpg" alt="Pham Tien Manh — ManhNho" width="340" height="453" fetchpriority="high">
+      <picture>
+        <source srcset="/assets/img/acropolis/portrait.webp" type="image/webp">
+        <img src="/assets/img/acropolis/portrait.jpg" alt="Pham Tien Manh — ManhNho" width="340" height="453" fetchpriority="high">
+      </picture>
       <div class="glitch__layers" aria-hidden="true">
-        <div class="glitch__layer" style="background-image:url('/assets/img/acropolis/portrait.jpg')"></div>
-        <div class="glitch__layer" style="background-image:url('/assets/img/acropolis/portrait.jpg')"></div>
+        <div class="glitch__layer" style="background-image:url('/assets/img/acropolis/portrait.webp')"></div>
+        <div class="glitch__layer" style="background-image:url('/assets/img/acropolis/portrait.webp')"></div>
         <div class="glitch__layer"></div>
       </div>
     </div>
@@ -56,7 +59,7 @@
   presence: "flea"
 } %}
 {% macro wbIcon(key) %}
-<img src="/assets/img/wb/{{ wbIcons[key] }}.png" alt="{{ key }}" loading="lazy" width="72" height="72">
+<img src="/assets/img/wb/{{ wbIcons[key] }}.webp" alt="{{ key }}" loading="lazy" width="72" height="72">
 {% endmacro %}
 
 {% set starFilled %}<svg class="wb-star filled" viewBox="0 0 16 16" width="13" height="13"><path d="M8 1l2.2 4.4L15 6.3l-3.5 3.4.8 4.9L8 12.4l-4.3 2.2.8-4.9L1 6.3l4.8-.9L8 1z" fill="currentColor" stroke="none"/></svg>{% endset %}
@@ -186,7 +189,7 @@
       {% for p in site.press %}
       <a class="press-art{% if p.img %} has-img{% endif %}" href="{{ p.link }}" target="_blank" rel="noopener noreferrer" style="--clip-accent: {{ p.color }}">
         <div class="press-art-src">
-          <img src="/assets/img/press/{{ p.icon }}.png" alt="" class="press-art-icon" width="16" height="16" loading="lazy">
+          <img src="/assets/img/press/{{ p.icon }}.webp" alt="" class="press-art-icon" width="16" height="16" loading="lazy">
           <span class="press-art-pub">{{ p.pub }}</span>
           <span class="press-art-date">{{ p.date }}</span>
         </div>

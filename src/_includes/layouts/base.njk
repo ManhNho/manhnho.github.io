@@ -19,7 +19,7 @@
   {% elif title %}{% set pageTitle = title + " · ManhNho" %}
   {% else %}{% set pageTitle = "ManhNho" %}{% endif %}
   {% set metaDesc = description or site.person.description %}
-  {% set ogImage = site.url + "/assets/img/acropolis/portrait.jpg" %}
+  {% set ogImage = site.url + "/assets/img/og-card.jpg" %}
   {% set ogTypeVal = ogType or "website" %}
 
   <title>{{ pageTitle }}</title>
@@ -41,6 +41,8 @@
   <meta property="og:description" content="{{ metaDesc }}">
   <meta property="og:url" content="{{ canonical }}">
   <meta property="og:image" content="{{ ogImage }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Pham Tien Manh (ManhNho)">
   {% if isPost %}
   <meta property="article:published_time" content="{{ page.date | isoDate }}">
@@ -55,6 +57,7 @@
   <meta name="twitter:image" content="{{ ogImage }}">
   <meta name="twitter:creator" content="@manhnho95">
 
+  <meta name="theme-color" content="#0a0a0a">
   <link rel="icon" href="/assets/img/acropolis/legend-2stars.png" type="image/png">
   <link rel="apple-touch-icon" href="/assets/img/acropolis/legend-2stars.png">
   <link rel="alternate" type="application/rss+xml" title="ManhNho — Blog" href="{{ site.url }}{{ '/feed.xml' if lang == 'en' else '/vi/feed.xml' }}">
