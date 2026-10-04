@@ -19,7 +19,6 @@ module.exports = {
     sameAs: [
       "https://github.com/manhnho",
       "https://www.linkedin.com/in/manhnho/",
-      "https://twitter.com/manhnho95",
       "https://acropolis.synack.com/inductees/manhnho",
       "https://cypeace.net",
     ],
@@ -43,7 +42,6 @@ module.exports = {
   social: {
     github: "https://github.com/manhnho",
     linkedin: "https://www.linkedin.com/in/manhnho/",
-    twitter: "https://twitter.com/manhnho95",
     email: "manh.pham@cypeace.net",
     company: "https://cypeace.net",
     acropolis: "https://acropolis.synack.com/inductees/manhnho",
