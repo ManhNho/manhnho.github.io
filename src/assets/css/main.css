@@ -77,7 +77,7 @@ a:hover { color: var(--red); }
 .nav { display: flex; align-items: center; justify-content: space-between; min-height: 66px; }
 .brand {
   font-family: var(--display); font-weight: 700; font-size: 1.15rem;
-  letter-spacing: .18em; color: var(--text); text-transform: uppercase;
+  letter-spacing: .06em; color: var(--text); text-transform: uppercase;
   display: inline-flex; align-items: center; min-height: 44px;
 }
 .brand:hover { color: var(--text); }
