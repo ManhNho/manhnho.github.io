@@ -46,7 +46,7 @@
 {# ---- Section navigation bar ---- #}
 <nav class="section-nav" id="section-nav" aria-label="Page sections">
   <div class="section-nav-inner container" role="tablist">
-    <button class="snav-tab is-active" id="tab-wanted" data-section="wanted" role="tab" aria-selected="true" aria-controls="panel-wanted">{{ t[lang].wb_title }}</button>
+    <button class="snav-tab" id="tab-wanted" data-section="wanted" role="tab" aria-selected="false" aria-controls="panel-wanted">{{ t[lang].wb_title }}</button>
     <button class="snav-tab" id="tab-recognition" data-section="recognition" role="tab" aria-selected="false" aria-controls="panel-recognition">{{ t[lang].recognition }}</button>
     <button class="snav-tab" id="tab-certs" data-section="certs" role="tab" aria-selected="false" aria-controls="panel-certs">{{ t[lang].certs }}</button>
     {% if site.press | length %}<button class="snav-tab" id="tab-press" data-section="press" role="tab" aria-selected="false" aria-controls="panel-press">{{ t[lang].press_title }}</button>{% endif %}
@@ -79,7 +79,7 @@
 {% set starFilled %}<svg class="wb-star filled" viewBox="0 0 16 16" width="13" height="13"><path d="M8 1l2.2 4.4L15 6.3l-3.5 3.4.8 4.9L8 12.4l-4.3 2.2.8-4.9L1 6.3l4.8-.9L8 1z" fill="currentColor" stroke="none"/></svg>{% endset %}
 {% set starEmpty %}<svg class="wb-star empty" viewBox="0 0 16 16" width="13" height="13"><path d="M8 1l2.2 4.4L15 6.3l-3.5 3.4.8 4.9L8 12.4l-4.3 2.2.8-4.9L1 6.3l4.8-.9L8 1z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>{% endset %}
 
-<section class="section section-panel is-active-panel" data-section-panel="wanted" id="panel-wanted" role="tabpanel" aria-labelledby="tab-wanted">
+<section class="section section-panel" data-section-panel="wanted" id="panel-wanted" role="tabpanel" aria-labelledby="tab-wanted">
   <h2 class="section-title"><button aria-expanded="true" aria-controls="sb-wanted">{{ t[lang].wb_title }} {{ chevron | safe }}</button></h2>
   <div class="section-body" id="sb-wanted">
     <div class="wb-sub">

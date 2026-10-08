@@ -246,7 +246,7 @@ a:hover { color: var(--red); }
 }
 
 /* ---- section panels: show only the active one ---- */
-#section-panels { min-height: 50vh; }
+#section-panels { }
 .section-panel {
   display: none;
   animation: panel-in .4s ease both;

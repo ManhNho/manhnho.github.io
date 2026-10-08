@@ -40,7 +40,7 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 
-// ---- Section nav: show one panel at a time ----
+// ---- Section nav: show one panel at a time (collapsed by default) ----
 (() => {
   const nav = document.getElementById("section-nav");
   if (!nav) return;
@@ -57,16 +57,19 @@ document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
   if (inner) inner.addEventListener("scroll", updateFade, { passive: true });
   updateFade();
 
+  var activeId = null;
+
   function activate(id, scroll) {
+    activeId = id;
     tabs.forEach(t => {
-      var sel = t.dataset.section === id;
+      var sel = id && t.dataset.section === id;
       t.classList.toggle("is-active", sel);
       t.setAttribute("aria-selected", String(sel));
       t.setAttribute("tabindex", sel ? "0" : "-1");
       if (sel && inner) t.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
     });
     panels.forEach(p => {
-      var active = p.dataset.sectionPanel === id;
+      var active = id && p.dataset.sectionPanel === id;
       p.classList.toggle("is-active-panel", active);
       if (active) p.style.animation = "none", p.offsetHeight, p.style.animation = "";
     });
@@ -74,7 +77,23 @@ document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
     if (scroll) nav.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  tabs.forEach(t => t.addEventListener("click", () => activate(t.dataset.section, true)));
+  function collapseAll() {
+    activate(null, false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  tabs.forEach(t => t.addEventListener("click", () => {
+    if (t.dataset.section === activeId) { collapseAll(); return; }
+    activate(t.dataset.section, true);
+  }));
+
+  var brand = document.querySelector(".brand");
+  if (brand) brand.addEventListener("click", function (e) {
+    if (location.pathname === "/" || location.pathname === "/vi/" || location.pathname === "/vi") {
+      e.preventDefault();
+      collapseAll();
+    }
+  });
 
   nav.addEventListener("keydown", function (e) {
     var idx = Array.from(tabs).indexOf(document.activeElement);
@@ -87,7 +106,7 @@ document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
     if (next >= 0) { e.preventDefault(); tabs[next].focus(); activate(tabs[next].dataset.section, true); }
   });
 
-  tabs.forEach(t => { if (!t.classList.contains("is-active")) t.setAttribute("tabindex", "-1"); });
+  tabs.forEach(t => t.setAttribute("tabindex", "-1"));
 
   var hash = location.hash.slice(1);
   if (hash && document.querySelector('[data-section-panel="' + hash + '"]')) activate(hash, false);
