@@ -385,7 +385,7 @@ document.querySelectorAll(".glitch").forEach((glitch) => {
   function open(raw, triggerLabel) {
     imgs = parseImgs(raw);
     if (!imgs.length) return;
-    lbImg.alt = triggerLabel || "Image";
+    lbImg.alt = triggerLabel || "Pham Tien Manh (ManhNho)";
     prevFocus = document.activeElement;
     show(0);
     box.hidden = false;

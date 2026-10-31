@@ -46,6 +46,7 @@ a:hover { color: var(--red); }
   text-decoration: none;
 }
 .skip-link:focus { top: 0; }
+.seo-images { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
 /* ---- focus-visible (WCAG 2.4.7 / 2.4.11) ---- */
 *:focus-visible {

@@ -113,9 +113,63 @@
     "worksFor": { "@type": "Organization", "name": "{{ site.person.worksFor }}", "url": "https://cypeace.net" },
     "alumniOf": { "@type": "CollegeOrUniversity", "name": "{{ site.person.alumniOf }}" },
     "knowsAbout": {{ site.person.knowsAbout | dump | safe }},
-    "sameAs": {{ site.person.sameAs | dump | safe }}
+    "sameAs": {{ site.person.sameAs | dump | safe }},
+    "hasCredential": [
+      {% for c in site.certs %}
+      { "@type": "EducationalOccupationalCredential", "name": "{{ c.name }}", "credentialCategory": "certification", "recognizedBy": { "@type": "Organization", "name": "{{ c.vendor }}" }{% if c.img %}, "image": "{{ site.url }}/assets/img/{{ c.img }}"{% endif %} }{% if not loop.last %},{% endif %}
+      {% endfor %}
+    ],
+    "award": {% set awards = [] %}{% for r in site.recognitions %}{% for b in r.badges %}{% set _ = awards.push("Synack Acropolis " + b.name + " " + r.year) %}{% endfor %}{% endfor %}{{ awards | dump | safe }}
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    "name": "ManhNho — Certifications & Recognitions",
+    "url": "{{ canonical }}",
+    "author": { "@type": "Person", "name": "{{ site.person.name }}" },
+    "image": [
+      {% for c in site.certs %}{% if c.img %}"{{ site.url }}/assets/img/{{ c.img }}"{% if not loop.last %},{% endif %}{% endif %}{% endfor %},
+      {% for h in site.halls %}{% if h.img %}"{{ site.url }}/assets/img/{{ h.img }}"{% endif %}{% if h.imgs %}{% for imgUrl in h.imgs %}"{{ site.url }}{{ imgUrl }}"{% if not loop.last %},{% endif %}{% endfor %}{% endif %}{% if not loop.last %},{% endif %}{% endfor %},
+      {% for r in site.recognitions %}"{{ site.url }}/assets/img/{{ r.img }}"{% if not loop.last %},{% endif %}{% endfor %}
+    ]
+  }
+  </script>
+  {% if site.press | length %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Press Coverage — Pham Tien Manh (ManhNho)",
+    "itemListElement": [
+      {% for p in site.press %}
+      { "@type": "ListItem", "position": {{ loop.index }}, "item": { "@type": "NewsArticle", "headline": {{ p.title | dump | safe }}, "publisher": { "@type": "Organization", "name": "{{ p.pub }}" }, "url": "{{ p.link }}", "datePublished": "{{ p.date }}"{% if p.img %}, "image": "{{ site.url }}/assets/img/press/{{ p.img }}"{% endif %} } }{% if not loop.last %},{% endif %}
+      {% endfor %}
+    ]
+  }
+  </script>
+  {% endif %}
+  {% set achieved = [] %}{% for w in site.wantedBoard %}{% if w.status == "captured" %}{% set _ = achieved.push(w) %}{% endif %}{% endfor %}
+  {% if achieved | length %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "CyPeace",
+    "alternateName": "Cyberspace Peace Company Limited",
+    "url": "https://cypeace.net",
+    "founder": { "@type": "Person", "name": "{{ site.person.name }}", "alternateName": "ManhNho" },
+    "description": "Vietnamese cybersecurity firm founded by Pham Tien Manh (ManhNho)",
+    "knowsAbout": {{ site.person.knowsAbout | dump | safe }},
+    "award": [
+      {% for w in achieved %}
+      "{{ w.name[lang] }} — {{ w.cat[lang] }}{% if w.date %} ({{ w.date[lang] }}){% endif %}"{% if not loop.last %},{% endif %}
+      {% endfor %}
+    ]
+  }
+  </script>
+  {% endif %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
