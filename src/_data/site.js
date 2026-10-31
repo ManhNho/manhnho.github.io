@@ -21,6 +21,8 @@ module.exports = {
       "https://www.linkedin.com/in/manhnho/",
       "https://acropolis.synack.com/inductees/manhnho",
       "https://cypeace.net",
+      "https://bughunter.withgoogle.com/profile/79ea3f0e-1d69-4a97-80e3-5cb62636ee89",
+      "https://www.credly.com/users/manhnho",
     ],
     knowsAbout: [
       "Offensive Security",

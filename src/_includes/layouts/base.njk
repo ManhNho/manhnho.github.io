@@ -102,24 +102,29 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "{{ site.person.name }}",
-    "alternateName": {{ site.person.alternateName | dump | safe }},
-    "url": "{{ site.url }}/",
-    "image": "{{ site.person.image }}",
-    "jobTitle": "{{ site.person.jobTitle }}",
-    "nationality": "{{ site.person.nationality }}",
-    "description": {{ site.person.description | dump | safe }},
-    "worksFor": { "@type": "Organization", "name": "{{ site.person.worksFor }}", "url": "https://cypeace.net" },
-    "alumniOf": { "@type": "CollegeOrUniversity", "name": "{{ site.person.alumniOf }}" },
-    "knowsAbout": {{ site.person.knowsAbout | dump | safe }},
-    "sameAs": {{ site.person.sameAs | dump | safe }},
-    "hasCredential": [
-      {% for c in site.certs %}
-      { "@type": "EducationalOccupationalCredential", "name": "{{ c.name }}", "credentialCategory": "certification", "recognizedBy": { "@type": "Organization", "name": "{{ c.vendor }}" }{% if c.img %}, "image": "{{ site.url }}/assets/img/{{ c.img }}"{% endif %} }{% if not loop.last %},{% endif %}
-      {% endfor %}
-    ],
-    "award": {% set awards = [] %}{% for r in site.recognitions %}{% for b in r.badges %}{% set _ = awards.push("Synack Acropolis " + b.name + " " + r.year) %}{% endfor %}{% endfor %}{{ awards | dump | safe }}
+    "@type": "ProfilePage",
+    "dateCreated": "2019-01-01",
+    "dateModified": "{{ page.date | isoDate }}",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "{{ site.person.name }}",
+      "alternateName": {{ site.person.alternateName | dump | safe }},
+      "url": "{{ site.url }}/",
+      "image": "{{ site.person.image }}",
+      "jobTitle": "{{ site.person.jobTitle }}",
+      "nationality": "{{ site.person.nationality }}",
+      "description": {{ site.person.description | dump | safe }},
+      "worksFor": { "@type": "Organization", "name": "{{ site.person.worksFor }}", "url": "https://cypeace.net" },
+      "alumniOf": { "@type": "CollegeOrUniversity", "name": "{{ site.person.alumniOf }}" },
+      "knowsAbout": {{ site.person.knowsAbout | dump | safe }},
+      "sameAs": {{ site.person.sameAs | dump | safe }},
+      "hasCredential": [
+        {% for c in site.certs %}
+        { "@type": "EducationalOccupationalCredential", "name": "{{ c.name }}", "credentialCategory": "certification", "recognizedBy": { "@type": "Organization", "name": "{{ c.vendor }}" }{% if c.img %}, "image": "{{ site.url }}/assets/img/{{ c.img }}"{% endif %} }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ],
+      "award": {% set awards = [] %}{% for r in site.recognitions %}{% for b in r.badges %}{% set _ = awards.push("Synack Acropolis " + b.name + " " + r.year) %}{% endfor %}{% endfor %}{{ awards | dump | safe }}
+    }
   }
   </script>
   <script type="application/ld+json">

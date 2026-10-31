@@ -3,7 +3,8 @@ permalink: /sitemap.xml
 eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 {%- for p in collections.all %}
 {%- if p.url and p.url.endsWith("/") %}
   <url>
@@ -13,6 +14,24 @@ eleventyExcludeFromCollections: true
     {%- endif %}
     <changefreq>{% if p.url == "/" or p.url == "/vi/" %}weekly{% else %}monthly{% endif %}</changefreq>
     <priority>{% if p.url == "/" %}1.0{% elif p.url == "/vi/" %}0.9{% elif "blog" in p.url %}0.7{% else %}0.6{% endif %}</priority>
+    {%- if p.url == "/" or p.url == "/vi/" %}
+    <image:image>
+      <image:loc>{{ site.person.image }}</image:loc>
+      <image:title>Pham Tien Manh (ManhNho)</image:title>
+    </image:image>
+    {%- for c in site.certs %}{%- if c.img %}
+    <image:image>
+      <image:loc>{{ site.url }}/assets/img/{{ c.img }}</image:loc>
+      <image:title>{{ c.name }} — {{ c.vendor }}</image:title>
+    </image:image>
+    {%- endif %}{%- endfor %}
+    {%- for r in site.recognitions %}
+    <image:image>
+      <image:loc>{{ site.url }}/assets/img/{{ r.img }}</image:loc>
+      <image:title>Synack Acropolis {{ r.year }}</image:title>
+    </image:image>
+    {%- endfor %}
+    {%- endif %}
   </url>
 {%- endif %}
 {%- endfor %}
