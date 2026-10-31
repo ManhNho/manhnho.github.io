@@ -153,7 +153,7 @@ module.exports = {
   // ===== Wanted Board — CyPeace metrics-driven achievement system =====
   // UPDATE THESE NUMBERS — everything else auto-computes
   wbMetrics: {
-    revenue:      20000000000, // annual revenue in VND (target 25B by end 2026)
+    revenue:      25000000000, // annual revenue in VND
     clients:      30,          // total enterprise clients
     intlClients:  3,           // international clients
     team:         20,          // total headcount (tech + biz + ops)
@@ -170,6 +170,7 @@ module.exports = {
   wbDates: {
     revenue_1:    { vi: "12.2024", en: "Dec 2024" },
     revenue_2:    { vi: "12.2025", en: "Dec 2025" },
+    revenue_3:    { vi: "11.2026", en: "Nov 2026" },
     clients_1:    { vi: "06.2024", en: "Jun 2024" },
     clients_2:    { vi: "07.2026", en: "Jul 2026" },
     intl_1:       { vi: "09.2023", en: "Sep 2023" },
@@ -198,7 +199,7 @@ const categories = [
     thresholds: [
       { v: 1000000000,     n: { vi: "1 tỷ VND ARR", en: "1B VND ARR" },        desc: { vi: "Doanh thu năm vượt 1 tỷ VND", en: "Annual revenue surpasses 1B VND" },              dk: "revenue_1" },
       { v: 5000000000,     n: { vi: "5 tỷ VND ARR", en: "5B VND ARR" },        desc: { vi: "Quy mô doanh nghiệp ATTT vừa", en: "Mid-size cybersecurity firm" },                  dk: "revenue_2" },
-      { v: 25000000000,    n: { vi: "25 tỷ VND ARR", en: "25B VND ARR" },      desc: { vi: "Top doanh nghiệp ATTT Việt Nam", en: "Top cybersecurity firm in Vietnam" },            dk: "revenue_3" },
+      { v: 25000000000,    n: { vi: "25 tỷ VND ARR", en: "25B VND ARR" },      desc: { vi: "Ngôi sao đang lên ngành ATTT Việt Nam", en: "Rising star cybersecurity firm in Vietnam" },  dk: "revenue_3" },
       { v: 125000000000,   n: { vi: "125 tỷ VND ARR", en: "125B VND ARR" },    desc: { vi: "Doanh nghiệp ATTT hàng đầu VN", en: "Leading cybersecurity enterprise in Vietnam" },  dk: "revenue_4" },
       { v: 250000000000,   n: { vi: "250 tỷ VND ARR", en: "250B VND ARR" },    desc: { vi: "Chuẩn bị bước sang Global Revenue", en: "Ready to transition to Global Revenue" },     dk: "revenue_5" },
     ],
