@@ -40,76 +40,87 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 
-// ---- Section nav: show one panel at a time (collapsed by default) ----
+// ---- Section nav: scroll spy + smooth scroll (all sections visible) ----
 (() => {
-  const nav = document.getElementById("section-nav");
+  var nav = document.getElementById("section-nav");
   if (!nav) return;
-  const tabs = nav.querySelectorAll(".snav-tab");
-  const panels = document.querySelectorAll(".section-panel");
-  const inner = nav.querySelector(".section-nav-inner");
-  if (!tabs.length || !panels.length) return;
+  var links = nav.querySelectorAll(".snav-tab");
+  var panels = document.querySelectorAll(".section-panel");
+  var inner = nav.querySelector(".section-nav-inner");
+  if (!links.length || !panels.length) return;
 
   function updateFade() {
     if (!inner) return;
     var atEnd = inner.scrollLeft + inner.clientWidth >= inner.scrollWidth - 2;
+    var atStart = inner.scrollLeft > 2;
     nav.classList.toggle("scrolled-end", atEnd);
+    nav.classList.toggle("scrolled-start", atStart);
   }
   if (inner) inner.addEventListener("scroll", updateFade, { passive: true });
   updateFade();
 
-  var activeId = null;
-
-  function activate(id, scroll) {
-    activeId = id;
-    tabs.forEach(t => {
-      var sel = id && t.dataset.section === id;
-      t.classList.toggle("is-active", sel);
-      t.setAttribute("aria-selected", String(sel));
-      t.setAttribute("tabindex", sel ? "0" : "-1");
-      if (sel && inner) t.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-    });
-    panels.forEach(p => {
-      var active = id && p.dataset.sectionPanel === id;
-      p.classList.toggle("is-active-panel", active);
-      if (active) p.style.animation = "none", p.offsetHeight, p.style.animation = "";
-    });
-    history.replaceState(null, "", id ? "#" + id : location.pathname);
-    if (scroll) nav.scrollIntoView({ behavior: "smooth", block: "start" });
+  function stickyOffset() {
+    return nav.offsetHeight + (document.querySelector(".site-header")?.offsetHeight || 0);
   }
 
-  function collapseAll() {
-    activate(null, false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
+  links.forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      var id = this.getAttribute("href").slice(1);
+      var target = document.getElementById(id);
+      if (!target) return;
+      var top = target.getBoundingClientRect().top + window.scrollY - stickyOffset() - 16;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    });
+  });
 
-  tabs.forEach(t => t.addEventListener("click", () => {
-    if (t.dataset.section === activeId) { collapseAll(); return; }
-    activate(t.dataset.section, true);
-  }));
+  var spyTicking = false;
+  function updateSpy() {
+    var offset = stickyOffset() + 24;
+    var activeId = null;
+    for (var i = panels.length - 1; i >= 0; i--) {
+      if (panels[i].getBoundingClientRect().top <= offset) {
+        activeId = panels[i].dataset.sectionPanel;
+        break;
+      }
+    }
+    links.forEach(function (l) {
+      var active = activeId && l.dataset.section === activeId;
+      l.classList.toggle("is-active", !!active);
+      if (active && inner) {
+        var lRect = l.getBoundingClientRect();
+        var iRect = inner.getBoundingClientRect();
+        var scrollTarget = inner.scrollLeft + lRect.left - iRect.left - (iRect.width - lRect.width) / 2;
+        inner.scrollTo({ left: scrollTarget, behavior: "smooth" });
+      }
+    });
+  }
+  window.addEventListener("scroll", function () {
+    if (spyTicking) return;
+    spyTicking = true;
+    requestAnimationFrame(function () { updateSpy(); spyTicking = false; });
+  }, { passive: true });
+  updateSpy();
 
   var brand = document.querySelector(".brand");
   if (brand) brand.addEventListener("click", function (e) {
     if (location.pathname === "/" || location.pathname === "/vi/" || location.pathname === "/vi") {
       e.preventDefault();
-      collapseAll();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      history.replaceState(null, "", location.pathname);
     }
   });
 
-  nav.addEventListener("keydown", function (e) {
-    var idx = Array.from(tabs).indexOf(document.activeElement);
-    if (idx < 0) return;
-    var next = -1;
-    if (e.key === "ArrowRight") next = (idx + 1) % tabs.length;
-    else if (e.key === "ArrowLeft") next = (idx - 1 + tabs.length) % tabs.length;
-    else if (e.key === "Home") next = 0;
-    else if (e.key === "End") next = tabs.length - 1;
-    if (next >= 0) { e.preventDefault(); tabs[next].focus(); activate(tabs[next].dataset.section, true); }
-  });
-
-  tabs.forEach(t => t.setAttribute("tabindex", "-1"));
-
   var hash = location.hash.slice(1);
-  if (hash && document.querySelector('[data-section-panel="' + hash + '"]')) activate(hash, false);
+  if (hash) {
+    var target = document.getElementById("panel-" + hash) || document.getElementById(hash);
+    if (target) {
+      setTimeout(function () {
+        var top = target.getBoundingClientRect().top + window.scrollY - stickyOffset() - 16;
+        window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+      }, 150);
+    }
+  }
 })();
 
 // ---- Blog: live search + tag filter + pagination (5 per page) ----
@@ -453,3 +464,21 @@ document.addEventListener("click", (e) => {
   const dur = card.classList.contains("locked") ? 2000 : 3000;
   setTimeout(() => card.classList.remove("wb-flash"), dur);
 });
+
+/* ---- Back to top button ---- */
+(() => {
+  const btn = document.querySelector(".back-to-top");
+  if (!btn) return;
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      btn.classList.toggle("is-visible", window.scrollY > 400);
+      ticking = false;
+    });
+  }, { passive: true });
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+})();

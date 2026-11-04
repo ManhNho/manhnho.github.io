@@ -96,7 +96,7 @@ a:hover { color: var(--red); }
 .nav-links a.active { color: var(--red-bright); border-bottom: 2px solid var(--red-bright); padding-bottom: 2px; }
 .lang-switch {
   border: 1px solid var(--red-dark); border-radius: 4px; padding: .5rem .7rem;
-  color: var(--red) !important; min-height: 44px;
+  color: var(--red-bright) !important; min-height: 44px;
 }
 .lang-switch:hover { background: var(--red); color: #fff !important; border-color: var(--red); }
 
@@ -219,6 +219,13 @@ a:hover { color: var(--red); }
   border-bottom: 1px solid var(--line);
   overflow: hidden;
 }
+.section-nav::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 36px;
+  background: linear-gradient(to left, transparent, rgba(10, 10, 10, 0.92));
+  pointer-events: none; z-index: 2; opacity: 0;
+  transition: opacity .25s;
+}
+.section-nav.scrolled-start::before { opacity: 1; }
 .section-nav::after {
   content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 36px;
   background: linear-gradient(to right, transparent, rgba(10, 10, 10, 0.92));
@@ -232,7 +239,7 @@ a:hover { color: var(--red); }
 }
 .section-nav-inner::-webkit-scrollbar { display: none; }
 .snav-tab {
-  flex: 0 0 auto; cursor: pointer;
+  flex: 0 0 auto; cursor: pointer; text-decoration: none;
   font-family: var(--sans); font-size: .72rem; font-weight: 500;
   letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
   background: transparent; color: var(--text-mute); border: 1px solid transparent;
@@ -246,17 +253,9 @@ a:hover { color: var(--red); }
   background: rgba(217, 0, 0, .08);
 }
 
-/* ---- section panels: show only the active one ---- */
+/* ---- section panels: all visible (vertical scroll) ---- */
 #section-panels { }
-.section-panel {
-  display: none;
-  animation: panel-in .4s ease both;
-}
-.section-panel.is-active-panel { display: block; }
-@keyframes panel-in {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: none; }
-}
+.section-panel { display: block; }
 
 /* ---- section frame ---- */
 .section { padding: 3rem 0; }
@@ -997,9 +996,24 @@ a:hover { color: var(--red); }
 .page-head h1 { font-family: var(--display); font-size: clamp(2.2rem, 5vw, 3.2rem); letter-spacing: .05em; text-transform: uppercase; margin: 0 0 .6rem; }
 .page-head p { color: var(--text-dim); max-width: 60ch; margin: 0; }
 
+/* ---- back to top ---- */
+.back-to-top {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 50;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--bg-card); border: 1px solid var(--line);
+  color: var(--text-mute); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; line-height: 1;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s, color .2s, border-color .2s, transform .2s;
+}
+.back-to-top.is-visible { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { color: var(--red-bright); border-color: var(--red-bright); transform: translateY(-2px); }
+
 /* ---- footer ---- */
 .site-footer { border-top: 1px solid var(--line); margin-top: 4rem; padding: 2.5rem 0; }
 .footer-inner { display: flex; flex-direction: column; gap: 1rem; }
+.footer-tagline { color: var(--text-dim); font-size: .82rem; margin: 0; font-style: italic; }
 .footer-social { display: flex; flex-wrap: wrap; gap: 1.4rem; font-family: var(--mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; }
 .footer-social a { color: var(--text-mute); display: inline-flex; align-items: center; min-height: 44px; }
 .footer-social a:hover { color: var(--red-bright); }
@@ -1014,8 +1028,9 @@ a:hover { color: var(--red); }
   .reveal { opacity: 1; transform: none; transition: none; }
   .pov-tile { opacity: 1; transform: none; animation: none; }
   .section-body { transition: none; }
-  .section-panel { animation: none; }
+  .section-panel { }
   .wb-card, .pinned-card, .year-group, .logo-cell, .cert-card, .pov-tile { transition: none; }
+  .back-to-top { transition: none; }
 }
 
 /* ---- tablet (641–820px): hero stays side-by-side, just tighter ---- */
@@ -1065,6 +1080,10 @@ a:hover { color: var(--red); }
   .snav-tab { font-size: .7rem; padding: .5rem .65rem; }
   .nav-links { gap: .6rem; }
   .nav-links a { font-size: .68rem; letter-spacing: .06em; }
+}
+
+@media (max-width: 640px) {
+  .back-to-top { bottom: 1.2rem; right: 1.2rem; }
 }
 
 /* touch devices: no hover, so always reveal verify affordances */

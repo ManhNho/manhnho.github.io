@@ -44,7 +44,9 @@ module.exports = {
     results_count: "bài viết",
     back_to_blog: "← Quay lại Blog",
     switch_lang: "EN",
+    footer_tagline: "Bảo mật không gian mạng · Săn lỗ hổng · Xây dựng CyPeace",
     footer_built: "Dựng bằng Eleventy · Host trên GitHub Pages",
+    back_top: "Lên đầu trang",
   },
   en: {
     nav_home: "Home",
@@ -90,6 +92,8 @@ module.exports = {
     results_count: "posts",
     back_to_blog: "← Back to Blog",
     switch_lang: "VI",
+    footer_tagline: "Securing cyberspace · Hunting vulnerabilities · Building CyPeace",
     footer_built: "Built with Eleventy · Hosted on GitHub Pages",
+    back_top: "Back to top",
   },
 };

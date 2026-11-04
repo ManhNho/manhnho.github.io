@@ -61,6 +61,7 @@
   <meta name="theme-color" content="#0a0a0a">
   <link rel="icon" href="/assets/img/acropolis/hooded.png" type="image/png">
   <link rel="apple-touch-icon" href="/assets/img/acropolis/hooded.png">
+  <link rel="manifest" href="/manifest.json">
   <link rel="alternate" type="application/rss+xml" title="ManhNho — Blog" href="{{ site.url }}{{ '/feed.xml' if lang == 'en' else '/vi/feed.xml' }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -221,8 +222,11 @@
     {{ content | safe }}
   </main>
 
+  <button class="back-to-top" aria-label="{{ t[lang].back_top or 'Back to top' }}" type="button">↑</button>
+
   <footer class="site-footer">
     <div class="container footer-inner">
+      <p class="footer-tagline">{{ t[lang].footer_tagline }}</p>
       <div class="footer-social">
         <a href="{{ site.social.github }}" target="_blank" rel="noopener noreferrer" title="Opens in new tab">GitHub</a>
         <a href="{{ site.social.linkedin }}" target="_blank" rel="noopener noreferrer" title="Opens in new tab">LinkedIn</a>

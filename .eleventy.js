@@ -6,6 +6,7 @@ const path = require("path");
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
+  eleventyConfig.addPassthroughCopy({ "src/manifest.json": "manifest.json" });
 
   eleventyConfig.addCollection("posts_vi", (c) =>
     c.getFilteredByGlob("src/posts/vi/**/*.md").sort((a, b) => b.date - a.date)
